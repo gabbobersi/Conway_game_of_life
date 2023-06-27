@@ -1,7 +1,7 @@
 import pygame
 
 from costants import WINDOW_WIDTH, WINDOW_HEIGHT
-from color import GRAY, RED, BLACK
+from color import *
 
 class Button:
     def __init__(self, screen, label = '', visible = False, x=None, y=None):
@@ -27,7 +27,7 @@ class Button:
         Draw the button with its label on the screen.
         """
         # Draw button
-        button_color = RED if self.visible else GRAY
+        button_color = CUSTOM_RED
         settings = (self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.screen, button_color, settings, 0)
         pygame.draw.rect(self.screen, BLACK, settings, 2)

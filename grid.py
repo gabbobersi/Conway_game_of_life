@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from color import WHITE, RED, GREEN
@@ -7,9 +9,13 @@ class Grid:
     def __init__(self):
         self.screen = SCREEN
         self.grid = [[WHITE for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.killed_cells_counter = 0
+        self.born_cells_counter = 0
 
     def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.killed_cells_counter = 0
+        self.born_cells_counter = 0
 
         for x in range(GRID_WIDTH):
             for y in range(GRID_HEIGHT):
@@ -17,12 +23,14 @@ class Grid:
 
                 if self.grid[y][x] == RED:  # Live cell
                     if live_neighbors < 2 or live_neighbors > 3:
+                        self.killed_cells_counter += 1
                         new_grid[y][x] = WHITE  # Dies for underpopulation or overpopulation
                     else:
                         new_grid[y][x] = RED  # Survives to the next generation
-                else:  # Cella morta
+                else:  # Dead cell
                     if live_neighbors == 3:
-                        new_grid[y][x] = GREEN  # Becomes alive because of reproduction
+                        self.born_cells_counter += 1
+                        new_grid[y][x] = RED  # Becomes alive because of reproduction
 
         # Grid update
         for x in range(GRID_WIDTH):
@@ -59,3 +67,28 @@ class Grid:
     
     def set_color(self, color, x, y):
         self.grid[y][x] = color
+
+    def randomize(self):
+        """
+        It randomizes the grid.
+        """
+        for x in range(GRID_WIDTH):
+            for y in range(GRID_HEIGHT):
+                self.grid[y][x] = RED if random.randint(0, 1) == 0 else WHITE
+
+    def get_alive_cells(self):
+        """
+        It counts alive cells.
+        """
+        count = 0
+        for x in range(GRID_WIDTH):
+            for y in range(GRID_HEIGHT):
+                if self.grid[y][x] == RED:
+                    count += 1
+        return count
+    
+    def get_dead_cells(self):
+        """
+        It counts dead cells.
+        """
+        return self.dead_cells_counter
