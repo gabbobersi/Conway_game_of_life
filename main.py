@@ -3,9 +3,10 @@ import sys
 import pygame
 
 from color import *
-from costants import CELL_SIZE, SCREEN, CLOCK, WINDOW_WIDTH, WINDOW_HEIGHT
+from costants import CELL_SIZE, SCREEN, CLOCK
 from button import Button
 from grid import Grid
+from label import Label
 
 def main():
     pygame.init()
@@ -17,7 +18,9 @@ def main():
 
     active_button = btn_Activate
 
-    standard_font = pygame.font.Font('fonts/arial.ttf', 20) 
+    lbl_alive = Label(SCREEN, 'Alive cells: 0', 200, 30, BLACK)
+    lbl_killed = Label(SCREEN, 'Killed cells: 0', 200, 60, BLACK)
+    lbl_born = Label(SCREEN, 'Born cells: 0', 200, 90, BLACK)
 
     SCREEN.fill(WHITE)
 
@@ -33,14 +36,10 @@ def main():
                 cell_y = mouse_pos[1] // CELL_SIZE
                 print(cell_x, cell_y)
 
-                if event.button == 1: 
-                    # Activate cell if left mouse button
-                    if grid.get_color(cell_x, cell_y) == WHITE:
-                        grid.set_color(RED, cell_x, cell_y)
-                elif event.button == 3:
-                    # Deactivate cell if right mouse button
-                    if grid.get_color(cell_x, cell_y) == RED:
-                        grid.set_color(WHITE, cell_x, cell_y)
+                if event.button == 1:           # Left mouse button
+                    grid.activate_cell(cell_x, cell_y)
+                elif event.button == 3:         # Right mouse button
+                    grid.deactivate_cell(cell_x, cell_y)
 
                 # Verify if the button is clicked, and if so, perform some actions per button
                 if btn_Activate.visible and btn_Activate.is_clicked(mouse_pos):
@@ -48,7 +47,19 @@ def main():
                 elif btn_Stop.visible and btn_Stop.is_clicked(mouse_pos):
                     active_button = btn_Activate
                 elif btn_Randomize.is_clicked(mouse_pos):
-                    grid.randomize()               
+                    grid.randomize()          
+
+            elif event.type == pygame.MOUSEMOTION:
+                mouse_pos = pygame.mouse.get_pos()
+                cell_x = mouse_pos[0] // CELL_SIZE
+                cell_y = mouse_pos[1] // CELL_SIZE
+                print(cell_x, cell_y)
+
+                if pygame.mouse.get_pressed()[0]:    # Left mouse button       
+                    grid.activate_cell(cell_x, cell_y)
+                elif pygame.mouse.get_pressed()[2]:  # Right mouse button
+                    grid.deactivate_cell(cell_x, cell_y)
+
         grid.draw()
 
         if active_button == btn_Activate:
@@ -68,25 +79,9 @@ def main():
             print("An error occurred :: no button is active! Please restart the game.")
 
         btn_Randomize.draw()
-
-        lbl_alive_text = "Alive cells: {}".format(grid.get_alive_cells())
-        lbl_killed_text = "Killed cells: {}".format(grid.killed_cells_counter)
-        lbl_born_text = "Born cells: {}".format(grid.born_cells_counter)
-
-        lbl_text = standard_font.render(lbl_alive_text, True, BLACK) 
-        label_rect = lbl_text.get_rect()
-        label_rect.center = (197, 30)
-        SCREEN.blit(lbl_text, label_rect)
-
-        lbl_text = standard_font.render(lbl_killed_text, True, BLACK) 
-        label_rect = lbl_text.get_rect()
-        label_rect.center = (200, 60)
-        SCREEN.blit(lbl_text, label_rect)
-
-        lbl_text = standard_font.render(lbl_born_text, True, BLACK) 
-        label_rect = lbl_text.get_rect()
-        label_rect.center = (197, 90)
-        SCREEN.blit(lbl_text, label_rect)
+        lbl_alive.draw()
+        lbl_killed.draw()
+        lbl_born.draw()
 
         pygame.display.update()
         tick_speed = tick_speed if tick_speed else 20

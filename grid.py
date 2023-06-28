@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from color import WHITE, RED, GREEN
+from color import WHITE, RED
 from costants import GRID_WIDTH, GRID_HEIGHT, CELL_SIZE, SCREEN
 
 class Grid:
@@ -61,6 +61,14 @@ class Grid:
                     if self.grid[neighbor_y][neighbor_x] == RED:
                         count += 1
         return count
+    
+    def activate_cell(self, x, y):
+        if self.get_color(x, y) == WHITE:
+            self.set_color(RED, x, y)
+
+    def deactivate_cell(self, x, y):
+        if self.get_color(x, y) == RED:
+            self.set_color(WHITE, x, y)
     
     def get_color(self, x, y):
         return self.grid[y][x]
