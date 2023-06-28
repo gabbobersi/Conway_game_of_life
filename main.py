@@ -14,7 +14,9 @@ def main():
 
     btn_Activate = Button(SCREEN, 'Activate', True, 20, 20)
     btn_Stop = Button(SCREEN, 'Stop', False, 20, 20)
-    btn_Randomize = Button(SCREEN, 'Random', True, 20, 100)
+
+    btn_Randomize = Button(SCREEN, 'Random', True, 20, 80)
+    btn_Clear = Button(SCREEN, 'Clear', True, 20, 140)
 
     active_button = btn_Activate
 
@@ -48,6 +50,8 @@ def main():
                     active_button = btn_Activate
                 elif btn_Randomize.is_clicked(mouse_pos):
                     grid.randomize()          
+                elif btn_Clear.is_clicked(mouse_pos):
+                    grid.clear()
 
             elif event.type == pygame.MOUSEMOTION:
                 mouse_pos = pygame.mouse.get_pos()
@@ -79,6 +83,8 @@ def main():
             print("An error occurred :: no button is active! Please restart the game.")
 
         btn_Randomize.draw()
+        btn_Clear.draw()
+
         lbl_alive.draw()
         lbl_killed.draw()
         lbl_born.draw()

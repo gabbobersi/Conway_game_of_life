@@ -43,6 +43,9 @@ class Grid:
                 rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
                 pygame.draw.rect(self.screen, self.grid[y][x], rect)
 
+    def clear(self):
+        self.grid = [[WHITE for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+
     def count_live_neighbors(self, x, y):
         """
         It counts "live" neighbors of a cell.
