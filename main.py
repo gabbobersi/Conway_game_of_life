@@ -20,9 +20,9 @@ def main():
 
     active_button = btn_Activate
 
-    lbl_alive = Label(SCREEN, 'Alive cells: 0', 200, 30, BLACK)
-    lbl_killed = Label(SCREEN, 'Killed cells: 0', 200, 60, BLACK)
-    lbl_born = Label(SCREEN, 'Born cells: 0', 200, 90, BLACK)
+    lbl_alive = Label(SCREEN, 200, 30)
+    lbl_killed = Label(SCREEN, 200, 60)
+    lbl_born = Label(SCREEN, 200, 90)
 
     SCREEN.fill(WHITE)
 
@@ -85,9 +85,9 @@ def main():
         btn_Randomize.draw()
         btn_Clear.draw()
 
-        lbl_alive.draw()
-        lbl_killed.draw()
-        lbl_born.draw()
+        lbl_alive.draw('Alive cells: {}'.format(grid.alive_cells_counter))
+        lbl_killed.draw('Killed cells: {}'.format(grid.killed_cells_counter))
+        lbl_born.draw('Born cells: {}'.format(grid.born_cells_counter))
 
         pygame.display.update()
         tick_speed = tick_speed if tick_speed else 20

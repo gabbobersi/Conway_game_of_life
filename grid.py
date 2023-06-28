@@ -11,6 +11,10 @@ class Grid:
         self.grid = [[WHITE for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
         self.killed_cells_counter = 0
         self.born_cells_counter = 0
+        
+    @property
+    def alive_cells_counter(self):
+        return self.get_alive_cells()
 
     def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
