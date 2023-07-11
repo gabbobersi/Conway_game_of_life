@@ -24,7 +24,7 @@ Run "main.py", and the game should start.
   - clears the grid.
 - **Invasion** (*WIP*):
   - generates in random position, a random number of "live" cells of the opposite teams.
-- **Counters** (*WIP*): (they counter per single generation!)
+- **Counters** (*WIP*): (they count per single generation!)
   - RED team live cells counter
   - RED team dead cells counter
   - RED team born cells counter
