@@ -8,6 +8,7 @@ Dependencies:
 
 Run "main.py", and the game should start.
 
+![Game_Of_Life](https://github.com/gabbobersi/Conway_game_of_life/assets/65022671/6018a1a1-4013-47a6-8d2e-ce1dd4331897)
 ## Implemented features
 - **Main menu** (*WIP*):
   - play
@@ -27,9 +28,7 @@ Run "main.py", and the game should start.
   - RED team live cells counter
   - RED team dead cells counter
   - RED team born cells counter
-
-![Game_Of_Life](https://github.com/gabbobersi/Conway_game_of_life/assets/65022671/6018a1a1-4013-47a6-8d2e-ce1dd4331897)
-
+ 
 ## BugFixes
 - [ ] Blue team cells can "eat" red team cells.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
