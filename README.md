@@ -35,6 +35,7 @@ Run "main.py", and the game should start.
 
 ## TODO Features
 - [ ] Change Team.get_opposite_team into Team.get_opposite_color
+- [ ] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
 - [ ] Add a 'Main menu' button in 'play' mode
 - [ ] Implement 'options' menu
   - [ ] Change grid resolution
