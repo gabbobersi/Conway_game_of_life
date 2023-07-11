@@ -1,7 +1,14 @@
 # Conway's Game Of Life
 Implementation of Conway's Game Of Life in Python with PyGame module.
 
-# Implemented features
+## How to play
+Dependencies:
+- Python 3.xx
+- pygame module (pip install pygame)
+
+Run "main.py", and the game should start.
+
+## Implemented features
 - **Main menu** (*WIP*):
   - play
   - options _WIP_
