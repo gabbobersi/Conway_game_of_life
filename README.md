@@ -13,11 +13,16 @@ Run "main.py", and the game should start.
   - play
   - options _WIP_
   - quit _WIP_
-- **Activate**: allows player to start Game Of Life.
-- **Stop**: allows the player to stop the game at any time.
-- **Random**: generates a random number of "live" cells in random positions.
-- **Clear**: clears the grid.
-- **Invasion** (*WIP*): generates in random position, a random number of "live" cells of the opposite teams.
+- **Activate**
+  - start Game Of Life.
+- **Stop**:
+  - stop the game at any time.
+- **Random**:
+  - generates a random number of "live" cells in random positions.
+- **Clear**:
+  - clears the grid.
+- **Invasion** (*WIP*):
+  - generates in random position, a random number of "live" cells of the opposite teams.
 - **Counters** (*WIP*): (they counter per single generation!)
   - RED team live cells counter
   - RED team dead cells counter
