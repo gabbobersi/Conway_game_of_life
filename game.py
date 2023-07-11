@@ -16,6 +16,7 @@ VALID_GAME_STATES = [
     'play',             # Game is running.
     'main_menu',        # Main menu is displayed. User can't interact with the grid. Animation is played.
     'option_menu',      # Option menu is displayed. User can't interact with the grid.
+    'quit'              # Default state in case of fault.
 ]
 
 class Game:
@@ -38,6 +39,7 @@ class Game:
     def state(self, value):
         if value not in VALID_GAME_STATES:
             print("Error :: Invalid game stated {}".format(value))
+            self.state = 'quit'
             return
         self._state = value
 
@@ -70,8 +72,8 @@ class Game:
                         self.state = 'option_menu'
                         return
                     elif btn_Quit.is_clicked(mouse_pos):
-                        pygame.quit()
-                        sys.exit()
+                        self.state = 'quit'
+                        return
             
             btn_Start.draw()
             btn_Option.draw()
@@ -81,7 +83,11 @@ class Game:
             CLOCK.tick(self.tick_speed)        
 
     def option_menu(self):
-        pass
+        """
+        WORK IN PROGRESS
+        """
+        self.state = 'quit'
+        return
 
     def draw(self):
         btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 20, 20)
@@ -90,7 +96,7 @@ class Game:
         # Screen size - Unused for now
         pygame.display.set_mode((self.window_width, self.window_height))
 
-        grid = Grid(self.screen.get_screen(), self.cell_size)
+        grid = Grid(self.screen.get_screen(), self.cell_size, self.default_team)
 
         btn_Stop = Button(self.screen.get_screen(), 'Stop', False, 20, 20)
         btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 20, 20)
@@ -119,7 +125,7 @@ class Game:
                     print(cell_x, cell_y)
 
                     if event.button == 1:           # Left mouse button
-                        grid.activate_cell(cell_x, cell_y)
+                        grid.activate_cell(cell_x, cell_y, self.default_team.color)
                     elif event.button == 3:         # Right mouse button
                         grid.deactivate_cell(cell_x, cell_y)
 
@@ -142,7 +148,7 @@ class Game:
                     print(cell_x, cell_y)
 
                     if pygame.mouse.get_pressed()[0]:    # Left mouse button       
-                        grid.activate_cell(cell_x, cell_y)
+                        grid.activate_cell(cell_x, cell_y, self.default_team.color)
                     elif pygame.mouse.get_pressed()[2]:  # Right mouse button
                         grid.deactivate_cell(cell_x, cell_y)
 
@@ -159,10 +165,12 @@ class Game:
                 self.tick_speed = 10
                 btn_Stop.visible = True
                 btn_Activate.visible = False
-                grid.apply_game_rules(self.default_team)
+                grid.apply_game_rules()
                 btn_Stop.draw()
             else:
                 print("An error occurred :: no button is active! Please restart the game.")
+                self.state = 'quit'
+                return
 
             btn_Randomize.draw()
             btn_Clear.draw()
@@ -192,3 +200,7 @@ class Game:
             elif self.state == 'play':
                 self.tick_speed = 4
                 self.play()
+            
+            elif self.state == 'quit':
+                pygame.quit()
+                sys.exit()

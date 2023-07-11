@@ -4,7 +4,7 @@ import pygame
 from color import *
 
 class Grid:
-    def __init__(self, screen, cell_size):
+    def __init__(self, screen, cell_size, player_team):
         self.screen = screen
         self.window_width, self.window_height = self.screen.get_size()
 
@@ -15,20 +15,22 @@ class Grid:
         
         self.killed_cells_counter = 0
         self.born_cells_counter = 0
+
+        self.player_team = player_team
         
     @property
     def alive_cells_counter(self):
-        return self.get_alive_cells()
+        return self.get_alive_cells(self.player_team.color)
 
-    def apply_game_rules(self, player_team):
+    def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
         self.killed_cells_counter = 0
         self.born_cells_counter = 0
 
         for x in range(self.width):
             for y in range(self.height):
-                new_grid = self.modify_cell_by_rule(x, y, player_team.color, new_grid)
-                new_grid = self.modify_cell_by_rule(x, y, player_team.get_opposite_team(), new_grid)
+                new_grid = self.modify_cell_by_rule(x, y, self.player_team.color, new_grid)
+                new_grid = self.modify_cell_by_rule(x, y, self.player_team.get_opposite_team(), new_grid)
 
         # Grid update
         for x in range(self.width):
@@ -44,7 +46,6 @@ class Grid:
                 new_grid[y][x] = WHITE  # Dies for underpopulation or overpopulation
             else:
                 new_grid[y][x] = color  # Survives to the next generation
-        
         else:  # Dead cell
             if live_neighbors == 3:
                 self.born_cells_counter += 1
@@ -60,7 +61,7 @@ class Grid:
     def clear(self):
         self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
 
-    def count_live_neighbors(self, x, y, color=RED):
+    def count_live_neighbors(self, x, y, color):
         """
         It counts "live" neighbors of a cell.
         """
@@ -79,22 +80,28 @@ class Grid:
                         count += 1
         return count
     
-    def activate_cell(self, x, y, color=RED):
-        self.set_color(color, x, y)
+    def activate_cell(self, x, y, color):
+        if self.grid[y][x] == WHITE:
+            self.set_color(x, y, color)
+        else:
+            print("Program is trying to colorate an already activated cells!!!!")
 
     def deactivate_cell(self, x, y):
-        self.set_color(WHITE, x, y)
+        self.set_color(x, y, WHITE)
     
     def get_color(self, x, y):
         return self.grid[y][x]
     
-    def set_color(self, color, x, y):
+    def set_color(self, x, y, color):
         self.grid[y][x] = color
 
-    def randomize(self, color=RED):
+    def randomize(self, color=None):
         """
         It randomizes the grid.
         """
+        if not color:
+            color = self.player_team.color
+
         for x in range(self.width):
             for y in range(self.height):
                 rand = random.randint(0, 4)
@@ -104,7 +111,7 @@ class Grid:
                     self.grid[y][x] = WHITE
                 # self.grid[y][x] = RED if random.randint(0, 3) == 0 else WHITE
 
-    def get_alive_cells(self, color=RED):
+    def get_alive_cells(self, color):
         """
         It counts alive cells.
         """
