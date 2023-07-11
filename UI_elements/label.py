@@ -2,6 +2,9 @@ import pygame
 from color import BLACK
 
 class Label:
+    """
+    A simple label.
+    """
     def __init__(self, screen, x, y, color=BLACK, text=''):
         self.font = pygame.font.Font('fonts/arial.ttf', 20) 
         self.screen = screen

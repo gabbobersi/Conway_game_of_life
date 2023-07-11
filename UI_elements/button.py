@@ -1,24 +1,13 @@
 import pygame
-
-from costants import WINDOW_WIDTH, WINDOW_HEIGHT
 from color import *
+from UI_elements.box import Box
 
-class Button:
-    def __init__(self, screen, label = '', visible = False, x=None, y=None):
-        self.screen = screen
-        self.width = button_width = 100
-        self.height = button_height = 50
-        
-        if not x:
-            self.x = (WINDOW_WIDTH - button_width) // 2
-        else:
-            self.x = x
-
-        if not y:
-            self.y = (WINDOW_HEIGHT - button_height) // 2
-        else:
-            self.y = y
-
+class Button(Box):
+    """
+    A simple box with a labels on it. It can be clicked.
+    """
+    def __init__(self, screen, label = '', visible = False, x=None, y=None, width=100, height=50, background_color=CUSTOM_RED):
+        super().__init__(screen, x, y, width, height, background_color)
         self.label = label
         self.visible = visible  # This will tell if button is "on" or "off"
 
@@ -26,13 +15,10 @@ class Button:
         """
         Draw the button with its label on the screen.
         """
-        # Draw button
-        button_color = CUSTOM_RED
-        settings = (self.x, self.y, self.width, self.height)
-        pygame.draw.rect(self.screen, button_color, settings, 0)
-        pygame.draw.rect(self.screen, BLACK, settings, 2)
+        # Draw the box
+        super().draw()
 
-        # Draw label in the middle of the button
+        # Draw label in the middle of the box
         font = pygame.font.Font(None, 30)
         text = font.render(self.label, True, BLACK)
         text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
@@ -47,5 +33,6 @@ class Button:
         """
         if self.x <= mouse_pos[0] <= self.x + self.width:           # Mouse is between the left and right side of the button
             if self.y <= mouse_pos[1] <= self.y + self.height:      # Mouse is between the top and bottom side of the button
+                print("{} button clicked".format(self.label))
                 return True
         return False
