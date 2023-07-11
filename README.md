@@ -24,6 +24,16 @@ Implementation of Conway's Game Of Life in Python with PyGame module.
 
 ## TODO Features
 - [ ] Change Team.get_opposite_team into Team.get_opposite_color
+- [ ] Add a 'Main menu' button in 'play' mode
+- [ ] Implement 'options' menu
+  - [ ] Change grid resolution
+  - [ ] Change player color
+  - [ ] Change game's speed
+- [ ] Create a toolbar with all the buttons
+  - [ ] Make labels clear
+  - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
+- [ ] Add a little animation for the main menu
+- [ ] "Beautify" main menu
 - [ ] Online Multiplayer
   - [ ] Server side
   - [ ] Client side
