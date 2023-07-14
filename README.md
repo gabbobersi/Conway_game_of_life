@@ -16,7 +16,9 @@ If dependencies are met, just run "main.py", and the game should start.
 - pygame module (pip install pygame)
 
 ## Background
-I was searching for a project with fast implementation, quick visual feedback and a lot of room for improvement.  
+I was searching for a project with fast implementation, quick visual feedback and a lot of room for improvement.
+All this, with the addition of a lot of fun. Here's the idea.
+
 Here some resources I used:
 - [Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 - [YouTube Numberphile](https://www.youtube.com/watch?v=R9Plq-D1gEk&ab_channel=Numberphile)
