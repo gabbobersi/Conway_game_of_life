@@ -24,14 +24,11 @@ class Button(Box):
         text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
         self.screen.blit(text, text_rect)
 
-    def is_clicked(self, event, mouse_pos):
+    def is_clicked(self, mouse_pos):
         """
-        Check if the mouse is over the button, during a MOUSEBUTTONDOWN event.
+        Check if the mouse is over the button.
 
         :param mouse_pos: mouse position
-        :param event: event to check
         :return: True if the button has been clicked, False otherwise
         """
-        if event.type != pygame.MOUSEBUTTONDOWN:
-            raise ValueError("Error :: Invalid event type {}. MOUSEBUTTON expected.".format(event))
         return super().has_mouse_over(mouse_pos)

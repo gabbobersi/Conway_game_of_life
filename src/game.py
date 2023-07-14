@@ -66,13 +66,13 @@ class Game:
                     return
                 elif event.type == pygame.MOUSEBUTTONDOWN: 
                     mouse_pos = pygame.mouse.get_pos()
-                    if btn_Start.is_clicked(event, mouse_pos):
+                    if btn_Start.is_clicked(mouse_pos):
                         self.state = 'play'
                         return
-                    elif btn_Option.is_clicked(event, mouse_pos):
+                    elif btn_Option.is_clicked(mouse_pos):
                         self.state = 'option_menu'
                         return
-                    elif btn_Quit.is_clicked(event, mouse_pos):
+                    elif btn_Quit.is_clicked(mouse_pos):
                         self.state = 'quit'
                         return
             
@@ -84,23 +84,37 @@ class Game:
             CLOCK.tick(self.tick_speed)        
 
     def option_menu(self):
-        """
-        WORK IN PROGRESS
-        """
         self.screen.fill(WHITE)
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
-        btn_change_resolution = Button(self.screen.get_screen(), 'Change resolution', True, middle_screen[0], middle_screen[1] - 150, 300)
-        btn_change_player_color = Button(self.screen.get_screen(), 'Change player color', True, middle_screen[0], middle_screen[1] - 70, 300)
-        btn_change_game_speed = Button(self.screen.get_screen(), 'Change game speed', True, middle_screen[0], middle_screen[1], 300)
+        
+        distance_from_center = 100
+        btn_change_resolution = Button(self.screen.get_screen(), 'Change resolution', True, 
+                                        middle_screen[0] - distance_from_center, middle_screen[1] - 150, 300)
+        
+        btn_change_player_color = Button(self.screen.get_screen(), 'Change player color', True, 
+                                        middle_screen[0] - distance_from_center, middle_screen[1] - 70, 300)
+        
+        btn_change_game_speed = Button(self.screen.get_screen(), 'Change game speed', True, 
+                                        middle_screen[0] - distance_from_center, middle_screen[1], 300)
+        
+        btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 
+                                        middle_screen[0] - distance_from_center, middle_screen[1] + 70, 300)
 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.state = 'quit'
                     return
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if btn_main_menu.is_clicked(mouse_pos):
+                        self.state = 'main_menu'
+                        return
+
             btn_change_resolution.draw()
             btn_change_player_color.draw()
             btn_change_game_speed.draw()
+            btn_main_menu.draw()
 
             pygame.display.update()
             CLOCK.tick(self.tick_speed)
@@ -129,6 +143,20 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.state = 'quit'
                     return
+                
+                if event.type == pygame.KEYDOWN:
+                    # Space bar can switch between Activate and Stop mode.
+                    if event.key == pygame.K_SPACE:
+                        print("Space bar pressed.")
+                        mouse_pos = pygame.mouse.get_pos()
+                        if btn_Activate.visible:
+                            active_button = btn_Stop
+                        elif btn_Stop.visible:
+                            active_button = btn_Activate  
+                    # R key activate Random button.
+                    elif event.key == pygame.K_r:
+                        grid.randomize()
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
                     cell_x = mouse_pos[0] // self.cell_size
@@ -141,17 +169,17 @@ class Game:
                         grid.deactivate_cell(cell_x, cell_y)
 
                     # Verify if the button is clicked
-                    if btn_Activate.visible and btn_Activate.is_clicked(event, mouse_pos):
+                    if btn_Activate.visible and btn_Activate.is_clicked(mouse_pos):
                         active_button = btn_Stop
-                    elif btn_Stop.visible and btn_Stop.is_clicked(event, mouse_pos):
+                    elif btn_Stop.visible and btn_Stop.is_clicked(mouse_pos):
                         active_button = btn_Activate
-                    elif btn_Randomize.is_clicked(event, mouse_pos):
+                    elif btn_Randomize.is_clicked(mouse_pos):
                         grid.randomize()          
-                    elif btn_Clear.is_clicked(event, mouse_pos):
+                    elif btn_Clear.is_clicked(mouse_pos):
                         grid.clear()
-                    elif btn_Invasion.is_clicked(event, mouse_pos):
+                    elif btn_Invasion.is_clicked(mouse_pos):
                         grid.invasion()
-                    elif btn_main_menu.is_clicked(event, mouse_pos):
+                    elif btn_main_menu.is_clicked(mouse_pos):
                         self.state = 'main_menu'
                         return
 
@@ -213,6 +241,6 @@ class Game:
                 self.play()
             
             elif self.state == 'quit':
-                print("Game is closing correctlt.")
+                print("Game is closing correctly.")
                 pygame.quit()
                 sys.exit()
