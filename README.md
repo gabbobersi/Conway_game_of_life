@@ -22,4 +22,4 @@ Here some resources I used:
 - [YouTube Numberphile](https://www.youtube.com/watch?v=R9Plq-D1gEk&ab_channel=Numberphile)
 - [YouTube Alan Zucconi](https://www.youtube.com/watch?v=Kk2MH9O4pXY&t=284s&ab_channel=AlanZucconi)
 
-_you may find other notes [here]()_
+_you may find other notes [here](https://github.com/gabbobersi/Conway_game_of_life/tree/main/notes)_
