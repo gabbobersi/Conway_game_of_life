@@ -1,12 +1,13 @@
 import sys
 
 import pygame
-from color import *
+from UI_elements.color import *
 from UI_elements.button import Button
-from grid import Grid
 from UI_elements.label import Label
+
+from grid import Grid
 from screen import Screen
-from team import Team
+from team import TeamManager
 
 TITLE = pygame.display.set_caption('Game of Life')
 CLOCK = pygame.time.Clock()
@@ -28,8 +29,7 @@ class Game:
         self.window_height = 720        
         self.screen = Screen(self.window_width, self.window_height)
         self.cell_size = 10          
-
-        self.default_team = Team('RED', RED)
+        self.team_manager = TeamManager('player', CUSTOM_RED, 'enemy', CUSTOM_BLUE)
 
     @property
     def state(self):
@@ -52,6 +52,7 @@ class Game:
         self._tick_speed = value
 
     def main_menu(self):
+        self.screen.fill(WHITE)
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
 
         btn_Start = Button(self.screen.get_screen(), 'Start', True, middle_screen[0], middle_screen[1] - 150)
@@ -61,17 +62,17 @@ class Game:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                    self.state = 'quit'
+                    return
                 elif event.type == pygame.MOUSEBUTTONDOWN: 
                     mouse_pos = pygame.mouse.get_pos()
-                    if btn_Start.is_clicked(mouse_pos):
+                    if btn_Start.is_clicked(event, mouse_pos):
                         self.state = 'play'
                         return
-                    elif btn_Option.is_clicked(mouse_pos):
+                    elif btn_Option.is_clicked(event, mouse_pos):
                         self.state = 'option_menu'
                         return
-                    elif btn_Quit.is_clicked(mouse_pos):
+                    elif btn_Quit.is_clicked(event, mouse_pos):
                         self.state = 'quit'
                         return
             
@@ -86,17 +87,27 @@ class Game:
         """
         WORK IN PROGRESS
         """
-        self.state = 'quit'
-        return
+        self.screen.fill(WHITE)
+        middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
+        btn_change_resolution = Button(self.screen.get_screen(), 'Change resolution', True, middle_screen[0], middle_screen[1] - 150, 300)
+        btn_change_player_color = Button(self.screen.get_screen(), 'Change player color', True, middle_screen[0], middle_screen[1] - 70, 300)
+        btn_change_game_speed = Button(self.screen.get_screen(), 'Change game speed', True, middle_screen[0], middle_screen[1], 300)
 
-    def draw(self):
-        btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 20, 20)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.state = 'quit'
+                    return
+            btn_change_resolution.draw()
+            btn_change_player_color.draw()
+            btn_change_game_speed.draw()
+
+            pygame.display.update()
+            CLOCK.tick(self.tick_speed)
 
     def play(self):
-        # Screen size - Unused for now
-        pygame.display.set_mode((self.window_width, self.window_height))
-
-        grid = Grid(self.screen.get_screen(), self.cell_size, self.default_team)
+        self.screen.fill(WHITE)
+        grid = Grid(self.screen.get_screen(), self.cell_size, self.team_manager)
 
         btn_Stop = Button(self.screen.get_screen(), 'Stop', False, 20, 20)
         btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 20, 20)
@@ -105,6 +116,7 @@ class Game:
         btn_Randomize = Button(self.screen.get_screen(), 'Random', True, 20, 80)
         btn_Clear = Button(self.screen.get_screen(), 'Clear', True, 20, 140)
         btn_Invasion = Button(self.screen.get_screen(), 'Invasion', True, 20, 200, background_color=CUSTOM_BLUE)
+        btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 20, 260, background_color=CUSTOM_RED)
 
         lbl_alive = Label(self.screen.get_screen(), 200, 30)
         lbl_killed = Label(self.screen.get_screen(), 200, 60)
@@ -115,9 +127,8 @@ class Game:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
+                    self.state = 'quit'
+                    return
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
                     cell_x = mouse_pos[0] // self.cell_size
@@ -125,21 +136,24 @@ class Game:
                     print(cell_x, cell_y)
 
                     if event.button == 1:           # Left mouse button
-                        grid.activate_cell(cell_x, cell_y, self.default_team.color)
+                        grid.activate_cell(cell_x, cell_y, self.team_manager.player.color)
                     elif event.button == 3:         # Right mouse button
                         grid.deactivate_cell(cell_x, cell_y)
 
                     # Verify if the button is clicked
-                    if btn_Activate.visible and btn_Activate.is_clicked(mouse_pos):
+                    if btn_Activate.visible and btn_Activate.is_clicked(event, mouse_pos):
                         active_button = btn_Stop
-                    elif btn_Stop.visible and btn_Stop.is_clicked(mouse_pos):
+                    elif btn_Stop.visible and btn_Stop.is_clicked(event, mouse_pos):
                         active_button = btn_Activate
-                    elif btn_Randomize.is_clicked(mouse_pos):
+                    elif btn_Randomize.is_clicked(event, mouse_pos):
                         grid.randomize()          
-                    elif btn_Clear.is_clicked(mouse_pos):
+                    elif btn_Clear.is_clicked(event, mouse_pos):
                         grid.clear()
-                    elif btn_Invasion.is_clicked(mouse_pos):
+                    elif btn_Invasion.is_clicked(event, mouse_pos):
                         grid.invasion()
+                    elif btn_main_menu.is_clicked(event, mouse_pos):
+                        self.state = 'main_menu'
+                        return
 
                 elif event.type == pygame.MOUSEMOTION:
                     mouse_pos = pygame.mouse.get_pos()
@@ -148,7 +162,7 @@ class Game:
                     print(cell_x, cell_y)
 
                     if pygame.mouse.get_pressed()[0]:    # Left mouse button       
-                        grid.activate_cell(cell_x, cell_y, self.default_team.color)
+                        grid.activate_cell(cell_x, cell_y, self.team_manager.player.color)
                     elif pygame.mouse.get_pressed()[2]:  # Right mouse button
                         grid.deactivate_cell(cell_x, cell_y)
 
@@ -175,6 +189,7 @@ class Game:
             btn_Randomize.draw()
             btn_Clear.draw()
             btn_Invasion.draw()
+            btn_main_menu.draw()
 
             lbl_alive.draw('Alive cells: {}'.format(grid.alive_cells_counter))
             lbl_killed.draw('Killed cells: {}'.format(grid.killed_cells_counter))
@@ -192,15 +207,12 @@ class Game:
             elif self.state == 'option_menu':
                 self.tick_speed = 40
                 self.option_menu()
-
-            elif self.state == 'draw':
-                self.tick_speed = 40
-                self.draw()
             
             elif self.state == 'play':
                 self.tick_speed = 4
                 self.play()
             
             elif self.state == 'quit':
+                print("Game is closing correctlt.")
                 pygame.quit()
                 sys.exit()

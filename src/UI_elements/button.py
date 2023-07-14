@@ -1,5 +1,5 @@
 import pygame
-from color import *
+from UI_elements.color import *
 from UI_elements.box import Box
 
 class Button(Box):
@@ -24,15 +24,14 @@ class Button(Box):
         text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
         self.screen.blit(text, text_rect)
 
-    def is_clicked(self, mouse_pos):
+    def is_clicked(self, event, mouse_pos):
         """
-        Check if the button has been clicked.
+        Check if the mouse is over the button, during a MOUSEBUTTONDOWN event.
 
         :param mouse_pos: mouse position
+        :param event: event to check
         :return: True if the button has been clicked, False otherwise
         """
-        if self.x <= mouse_pos[0] <= self.x + self.width:           # Mouse is between the left and right side of the button
-            if self.y <= mouse_pos[1] <= self.y + self.height:      # Mouse is between the top and bottom side of the button
-                print("{} button clicked".format(self.label))
-                return True
-        return False
+        if event.type != pygame.MOUSEBUTTONDOWN:
+            raise ValueError("Error :: Invalid event type {}. MOUSEBUTTON expected.".format(event))
+        return super().has_mouse_over(mouse_pos)

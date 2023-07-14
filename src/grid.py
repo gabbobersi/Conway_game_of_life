@@ -1,10 +1,11 @@
 import random
 
 import pygame
-from color import *
+
+from UI_elements.color import WHITE
 
 class Grid:
-    def __init__(self, screen, cell_size, player_team):
+    def __init__(self, screen, cell_size, team_manager):
         self.screen = screen
         self.window_width, self.window_height = self.screen.get_size()
 
@@ -16,11 +17,12 @@ class Grid:
         self.killed_cells_counter = 0
         self.born_cells_counter = 0
 
-        self.player_team = player_team
+        self.player = team_manager.player
+        self.enemy = team_manager.enemy
         
     @property
     def alive_cells_counter(self):
-        return self.get_alive_cells(self.player_team.color)
+        return self.get_alive_cells(self.player.color)
 
     def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
@@ -29,8 +31,8 @@ class Grid:
 
         for x in range(self.width):
             for y in range(self.height):
-                new_grid = self.modify_cell_by_rule(x, y, self.player_team.color, new_grid)
-                new_grid = self.modify_cell_by_rule(x, y, self.player_team.get_opposite_team(), new_grid)
+                new_grid = self.modify_cell_by_rule(x, y, self.player.color, new_grid)
+                new_grid = self.modify_cell_by_rule(x, y, self.enemy.color, new_grid)
 
         # Grid update
         for x in range(self.width):
@@ -100,16 +102,15 @@ class Grid:
         It randomizes the grid.
         """
         if not color:
-            color = self.player_team.color
+            color = self.player.color
 
         for x in range(self.width):
             for y in range(self.height):
                 rand = random.randint(0, 4)
                 if rand == 0 and self.grid[y][x] == WHITE:
                     self.grid[y][x] = color
-                elif rand == 1 and self.grid[y][x] not in (RED, BLUE):
+                elif rand == 1 and self.grid[y][x] not in (self.player.color, self.enemy.color):
                     self.grid[y][x] = WHITE
-                # self.grid[y][x] = RED if random.randint(0, 3) == 0 else WHITE
 
     def get_alive_cells(self, color):
         """
@@ -132,4 +133,4 @@ class Grid:
         """
         It fills the grid with alive cells of the opposite team.
         """
-        self.randomize(BLUE)
+        self.randomize(self.enemy.color)
