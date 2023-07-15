@@ -4,7 +4,7 @@ import pygame
 from UI_elements.color import *
 from UI_elements.button import Button
 from UI_elements.label import Label
-from UI_elements.toolbar import Toolbar
+from UI_elements.toolbar import TopToolbar, LeftSideToolbar, SETTINGS
 
 from grid import Grid
 from screen import Screen
@@ -89,6 +89,8 @@ class Game:
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
         
         distance_from_center = 100
+        btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar position', True,
+                                        middle_screen[0] - distance_from_center, middle_screen[1] - 220, 300)
         btn_change_resolution = Button(self.screen.get_screen(), 'Change resolution', True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 150, 300)
         
@@ -111,11 +113,14 @@ class Game:
                     if btn_main_menu.is_clicked(mouse_pos):
                         self.state = 'main_menu'
                         return
+                    if btn_toolbar_position.is_clicked(mouse_pos):
+                        self.toolbar_position = 'top'
 
             btn_change_resolution.draw()
             btn_change_player_color.draw()
             btn_change_game_speed.draw()
             btn_main_menu.draw()
+            btn_toolbar_position.draw()
 
             pygame.display.update()
             CLOCK.tick(self.tick_speed)
@@ -124,21 +129,24 @@ class Game:
         self.screen.fill(WHITE)
         grid = Grid(self.screen.get_screen(), self.cell_size, self.team_manager)
 
-        btn_Stop = Button(self.screen.get_screen(), 'Stop', False, 20, 20)
-        btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 20, 20)
+        btn_Stop = Button(self.screen.get_screen(), 'Stop', False, 0, 0)
+        btn_Activate = Button(self.screen.get_screen(), 'Activate', True, 0, 0)
         active_button = btn_Activate
 
-        btn_Randomize = Button(self.screen.get_screen(), 'Random', True, 20, 80)
-        btn_Clear = Button(self.screen.get_screen(), 'Clear', True, 20, 140)
-        btn_Invasion = Button(self.screen.get_screen(), 'Invasion', True, 20, 200, background_color=CUSTOM_BLUE)
-        btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 20, 260, background_color=CUSTOM_RED)
+        btn_Randomize = Button(self.screen.get_screen(), 'Random', True, 0, 0)
+        btn_Clear = Button(self.screen.get_screen(), 'Clear', True, 0, 0)
+        btn_Invasion = Button(self.screen.get_screen(), 'Invasion', True, 0, 0, background_color=CUSTOM_BLUE)
+        btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 0, 0)
 
-        lbl_alive = Label(self.screen.get_screen(), 200, 30)
-        lbl_killed = Label(self.screen.get_screen(), 200, 60)
-        lbl_born = Label(self.screen.get_screen(), 200, 90)
+        toolbar_height = SETTINGS['top_toolbar']['height']
+        toolbar_width = SETTINGS['left_side_toolbar']['width']
 
         toolbar_buttons = [btn_Stop, btn_Activate, btn_Randomize, btn_Clear, btn_Invasion, btn_main_menu]
-        toolbar = Toolbar(self.screen, 50, background_color=CUSTOM_RED, buttons=toolbar_buttons)
+        toolbar = LeftSideToolbar(self.screen, toolbar_height, background_color=BLACK, buttons=toolbar_buttons)
+
+        lbl_alive = Label(self.screen.get_screen(), 10, toolbar_height + 20)
+        lbl_killed = Label(self.screen.get_screen(), 10, toolbar_height + 50)
+        lbl_born = Label(self.screen.get_screen(), 10, toolbar_height + 80)
 
         self.screen.fill(WHITE)
 

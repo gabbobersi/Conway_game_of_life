@@ -11,7 +11,7 @@ class Grid:
 
         self.cell_size = cell_size
         self.width = self.window_width // self.cell_size
-        self.height = self.window_height // self.cell_size
+        self.height = (self.window_height) // self.cell_size
         self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
         
         self.killed_cells_counter = 0

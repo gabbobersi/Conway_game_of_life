@@ -22,6 +22,6 @@ class Box(InteractiveEntity):
         """
         settings = (self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.screen, self.background_color, settings, 0)
-        pygame.draw.rect(self.screen, BLACK, settings, 2)   # Draw a black border around the box
+        pygame.draw.rect(self.screen, BLACK, settings, 1)   # Draw a black border around the box
 
     

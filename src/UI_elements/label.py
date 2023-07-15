@@ -19,7 +19,7 @@ class Label:
             self.text = custom_text
         lbl_text = self.font.render(self.text, True, self.color)
         label_rect = lbl_text.get_rect()
-        label_rect.center = (self.x, self.y)
+        label_rect.topleft = (self.x, self.y)
         self.screen.blit(lbl_text, label_rect)
 
 class InteractiveLabel(Label):
