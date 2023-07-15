@@ -4,6 +4,7 @@ import pygame
 from UI_elements.color import *
 from UI_elements.button import Button
 from UI_elements.label import Label
+from UI_elements.toolbar import Toolbar
 
 from grid import Grid
 from screen import Screen
@@ -136,6 +137,9 @@ class Game:
         lbl_killed = Label(self.screen.get_screen(), 200, 60)
         lbl_born = Label(self.screen.get_screen(), 200, 90)
 
+        toolbar_buttons = [btn_Stop, btn_Activate, btn_Randomize, btn_Clear, btn_Invasion, btn_main_menu]
+        toolbar = Toolbar(self.screen, 50, background_color=CUSTOM_RED, buttons=toolbar_buttons)
+
         self.screen.fill(WHITE)
 
         while True:
@@ -214,10 +218,11 @@ class Game:
                 self.state = 'quit'
                 return
 
-            btn_Randomize.draw()
-            btn_Clear.draw()
-            btn_Invasion.draw()
-            btn_main_menu.draw()
+            toolbar.draw()
+            # btn_Randomize.draw()
+            # btn_Clear.draw()
+            # btn_Invasion.draw()
+            # btn_main_menu.draw()
 
             lbl_alive.draw('Alive cells: {}'.format(grid.alive_cells_counter))
             lbl_killed.draw('Killed cells: {}'.format(grid.killed_cells_counter))

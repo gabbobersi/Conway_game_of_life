@@ -32,3 +32,20 @@ class Button(Box):
         :return: True if the button has been clicked, False otherwise
         """
         return super().has_mouse_over(mouse_pos)
+    
+    def update(self, new_x=None, new_y=None, new_width=None, new_height=None, background_color = None, label = None):
+        """
+        Update button's attributes.
+        """
+        if new_x:
+            self.x = new_x
+        if new_y:
+            self.y = new_y
+        if new_width:
+            self.width = new_width
+        if new_height:
+            self.height = new_height
+        if background_color:
+            self.background_color = background_color
+        if label:
+            self.label = label
