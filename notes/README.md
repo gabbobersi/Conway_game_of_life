@@ -20,24 +20,26 @@ They may not represent the current state of the project.
   - RED team live cells counter
   - RED team dead cells counter
   - RED team born cells counter
+- **Dynamic Toolbar**
+  - Can be set on 'top' or on 'side' of the screen. 
  
 ## BugFixes
+- [x] Label's text position change based on current text's length.
+  - Label shoudl be in a fixed position, not based on current text's lenght.
 - [ ] Blue team cells can "eat" red team cells.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
 
 ## TODO Features
-- [X] Change Team.get_opposite_team into Team.get_opposite_color
-- [X] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
-- [X] Add a 'Main menu' button in 'play' mode
-- [ ] Implement 'options' menu
+- [x] Change Team.get_opposite_team into Team.get_opposite_color
+- [x] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
+- [x] Add a 'Main menu' button in 'play' mode
+- [x] Implement 'options' menu
+  - [x] Change toolbar position
   - [ ] Change grid resolution
-    - Micro
-    - Standard (default)
-    - Huge
   - [ ] Change player color
   - [ ] Change game's speed
-- [ ] Create a toolbar with all the buttons
-  - [ ] Make labels clear
+- [x] Create a toolbar with all the buttons
+  - [x] Make labels clear
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
 - [ ] Add a little animation for the main menu
 - [ ] "Beautify" main menu
