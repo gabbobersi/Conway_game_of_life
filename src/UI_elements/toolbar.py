@@ -1,27 +1,59 @@
+"""
+Toolbars are created with a factory. They should not be used directly.
+"""
+
 import pygame
 
+# Data structure to maintain coherence between the toolbar type and other UI elements.
 SETTINGS = {
-    'top_toolbar': {
-        'height': 50
+    'top': {
+        'height': 50,
+        'label_position': {
+            'additional_x': 0,
+            'additional_y': 20
+        }
     },
-    'left_side_toolbar': {
-        'width': 200
+    'left': {
+        'width': 200,
+        'label_position': {
+            'additional_x': 20,
+            'additional_y': 0
+        }
     }
 }
 
+VALID_TOOLBARS = SETTINGS.keys()
+
+class ToolbarFactory:
+    """
+    This class should be used to dinamically create toolbars instances.
+    """
+    def __init__(self, screen, background_color, buttons, labels):
+        self.screen = screen
+        self.background_color = background_color
+        self.buttons = buttons
+        self.labels = labels
+
+    def get_toolbar(self, type_of_toolbar):
+        if type_of_toolbar == 'top':
+            return TopToolbar(self.screen, self.background_color, self.buttons, self.labels)
+        elif type_of_toolbar == 'left':
+            return LeftSideToolbar(self.screen, self.background_color, self.buttons, self.labels)
+        else:
+            raise ValueError("Error :: Invalid toolbar type {}. Valid types are: {}".format(type_of_toolbar, VALID_TOOLBARS))
 
 class Toolbar:
     """
     A simple toolbar with no orientation.
-    It should not be used without orientation (so it should not be used directly).
+    It should not be used directly.
     """
-    def __init__(self, screen, width, height, background_color, buttons=[]):
+    def __init__(self, screen, width, height, background_color, buttons, labels):
         self.screen = screen
         self.width = width
         self.height = height
         self.background_color = background_color
-        # Buttons
         self.buttons = buttons
+        self.labels = labels
 
     def draw(self):
         """
@@ -32,12 +64,12 @@ class Toolbar:
 class TopToolbar(Toolbar):
     """
     A toolbar going from the top left to the top right of the screen.
-    It is designed to be used with buttons.
+    It should not be used directly.
     """
-    def __init__(self, screen, height, background_color, buttons=[]):
-        width = screen.width
-        super().__init__(screen, width, height, background_color, buttons)
-        self.space_per_button = width / len(buttons)
+    def __init__(self, screen, background_color, buttons, labels):
+        height = SETTINGS['top']['height']
+        super().__init__(screen, screen.width, height, background_color, buttons, labels)
+        self.space_per_button = screen.width / len(buttons)
 
     def draw(self):
         """
@@ -54,15 +86,26 @@ class TopToolbar(Toolbar):
             horizontal_space += self.space_per_button
             button.draw()
 
+    def draw_labels(self):
+        offset = 1
+        for label in self.labels:
+            label.update(new_x = self.width + label.get_label_position()[0], new_y = label.get_label_position()[1] * offset)
+            offset += 1
+            label.draw()
+
+    def get_label_position(self):
+        position = SETTINGS['top']['label_position']
+        return (position['additional_x'], position['additional_y'])
+
 class LeftSideToolbar(Toolbar):
     """
     A toolbar going from the top left to the bottom left of the screen.
-    It is designed to be used with buttons.
+    It should not be used directly.
     """
-    def __init__(self, screen, width, background_color, buttons=[]):
-        height = screen.height
-        super().__init__(screen, width, height, background_color, buttons)
-        self.space_per_button = height / len(buttons)
+    def __init__(self, screen, background_color, buttons, labels):
+        width = SETTINGS['left']['width']
+        super().__init__(screen, width, screen.height, background_color, buttons, labels)
+        self.space_per_button = screen.height / len(buttons)
 
     def draw(self):
         """
@@ -78,3 +121,14 @@ class LeftSideToolbar(Toolbar):
             button.update(new_x = 0, new_y = vertical_space, new_width = self.width, new_height = self.space_per_button)
             vertical_space += self.space_per_button
             button.draw()
+
+    def draw_labels(self):
+        offset = 1
+        for label in self.labels:
+            label.update(new_x = label.get_label_position()[0] * offset, new_y = self.height + label.get_label_position()[1])
+            label.draw()
+            offset += 1
+
+    def get_label_position(self):
+        position = SETTINGS['left']['label_position']
+        return (position['additional_x'], position['additional_y'])

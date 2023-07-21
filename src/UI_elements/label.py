@@ -6,7 +6,7 @@ class Label:
     """
     A simple label.
     """
-    def __init__(self, screen, x, y, color=BLACK, text=''):
+    def __init__(self, screen, x, y, text='', color=BLACK):
         self.font = pygame.font.Font('fonts/Gameplay.ttf', 14) 
         self.screen = screen
         self.text = text
@@ -17,14 +17,29 @@ class Label:
     def draw(self, custom_text=''):
         if custom_text:
             self.text = custom_text
-        lbl_text = self.font.render(self.text, True, self.color)
-        label_rect = lbl_text.get_rect()
-        label_rect.topleft = (self.x, self.y)
-        self.screen.blit(lbl_text, label_rect)
+        text = self.font.render(self.text, True, self.color)
+        rect = text.get_rect()
+        rect.topleft = (self.x, self.y)
+        self.screen.blit(text, rect)
+
+    def update(self, new_x=None, new_y=None, new_text=None, new_color=None):
+        """
+        Update label's attributes.
+        """
+        if new_x:
+            self.x = new_x
+        if new_y:
+            self.y = new_y
+        if new_text:
+            self.text = new_text
+        if new_color:
+            self.color = new_color
 
 class InteractiveLabel(Label):
     def __init__(self, screen, x, y, width, height, text=''):
-        super().__init__(screen, x, y, width, height, text)
+        super().__init__(screen, x, y, text)
+        self.width = width
+        self.height = height
 
     def is_clicked(self, event, mouse_pos):
         """

@@ -22,6 +22,5 @@ class InteractiveEntity(Entity):
         """
         if self.x <= mouse_pos[0] <= self.x + self.width:           # Mouse is between the left and right side of the button
             if self.y <= mouse_pos[1] <= self.y + self.height:      # Mouse is between the top and bottom side of the button
-                print("{} button clicked".format(self.label))
                 return True
         
