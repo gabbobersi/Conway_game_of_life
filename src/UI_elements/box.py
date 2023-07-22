@@ -22,6 +22,19 @@ class Box(InteractiveEntity):
         """
         settings = (self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.screen, self.background_color, settings, 0)
-        pygame.draw.rect(self.screen, BLACK, settings, 2)   # Draw a black border around the box
+        pygame.draw.rect(self.screen, BLACK, settings, 1)   # Draw a black border around the box
 
-    
+    def update(self, new_x, new_y, new_width, new_height, background_color):
+        """
+        Update box's attributes.
+        """
+        if new_x:
+            self.x = new_x
+        if new_y:
+            self.y = new_y
+        if new_width:
+            self.width = new_width
+        if new_height:
+            self.height = new_height
+        if background_color:
+            self.background_color = background_color
