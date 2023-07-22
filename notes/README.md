@@ -28,6 +28,7 @@ They may not represent the current state of the project.
   - Label shoudl be in a fixed position, not based on current text's lenght.
 - [ ] Blue team cells can "eat" red team cells.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
+- [ ] Area under the toolbar should be considered "dead", like out of screen.
 
 ## TODO Features
 - [x] Change Team.get_opposite_team into Team.get_opposite_color
