@@ -13,21 +13,19 @@ class Grid:
         self.width = self.window_width // self.cell_size
         self.height = (self.window_height) // self.cell_size
         self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
-        
-        self.killed_cells_counter = 0
-        self.born_cells_counter = 0
 
         self.player = team_manager.player
         self.enemy = team_manager.enemy
-        
-    @property
-    def alive_cells_counter(self):
-        return self.get_alive_cells(self.player.color)
+
+        self._alive_cells_counter = 0
+        self._dead_cells_counter = 0
+        self._born_cells_counter = 0
 
     def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
-        self.killed_cells_counter = 0
-        self.born_cells_counter = 0
+        self._alive_cells_counter = 0
+        self._dead_cells_counter = 0
+        self._born_cells_counter = 0
 
         for x in range(self.width):
             for y in range(self.height):
@@ -44,13 +42,14 @@ class Grid:
 
         if self.grid[y][x] == color:  # Live cell
             if live_neighbors < 2 or live_neighbors > 3:
-                self.killed_cells_counter += 1
+                self._dead_cells_counter += 1
                 new_grid[y][x] = WHITE  # Dies for underpopulation or overpopulation
             else:
                 new_grid[y][x] = color  # Survives to the next generation
+                self._alive_cells_counter += 1
         else:  # Dead cell
             if live_neighbors == 3:
-                self.born_cells_counter += 1
+                self._born_cells_counter += 1
                 new_grid[y][x] = color  # Becomes alive because of reproduction
         return new_grid
 
@@ -62,6 +61,7 @@ class Grid:
 
     def clear(self):
         self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
+        self.__reset_cells_counter()
 
     def count_live_neighbors(self, x, y, color):
         """
@@ -112,22 +112,42 @@ class Grid:
                 elif rand == 1 and self.grid[y][x] not in (self.player.color, self.enemy.color):
                     self.grid[y][x] = WHITE
 
-    def get_alive_cells(self, color):
+    # def get_alive_cells(self, color):
+    #     """
+    #     It counts alive cells.
+    #     """
+    #     count = 0
+    #     for x in range(self.width):
+    #         for y in range(self.height):
+    #             if self.grid[y][x] == color:
+    #                 count += 1
+    #     return count
+    
+    def get_alive_cells(self):
         """
         It counts alive cells.
         """
-        count = 0
-        for x in range(self.width):
-            for y in range(self.height):
-                if self.grid[y][x] == color:
-                    count += 1
-        return count
+        return self._alive_cells_counter
+
+    def get_born_cells(self):
+        """
+        It counts born cells.
+        """
+        return self._born_cells_counter
     
     def get_dead_cells(self):
         """
         It counts dead cells.
         """
-        return self.dead_cells_counter
+        return self._dead_cells_counter
+    
+    def __reset_cells_counter(self):
+        """
+        It resets the cells counter.
+        """
+        self._alive_cells_counter = 0
+        self._dead_cells_counter = 0
+        self._born_cells_counter = 0
     
     def invasion(self):
         """

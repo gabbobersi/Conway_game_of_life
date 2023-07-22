@@ -6,7 +6,7 @@ class Label:
     """
     A simple label.
     """
-    def __init__(self, screen, x, y, text='', color=BLACK):
+    def __init__(self, screen, x=20, y=20, text='', color=BLACK):
         self.font = pygame.font.Font('fonts/Gameplay.ttf', 14) 
         self.screen = screen
         self.text = text
@@ -30,12 +30,30 @@ class Label:
             self.x = new_x
         if new_y:
             self.y = new_y
-        if new_text:
-            self.text = new_text
         if new_color:
             self.color = new_color
+        if new_text:
+            self.text = new_text
+
+
+class TemplateLabel(Label):
+    """
+    A label whose text is generated via template.
+    """
+    def __init__(self, screen, x, y, template_text, template_method, color=BLACK):
+        super().__init__(screen, x, y, '', color=color)
+        self.template_text = template_text      # Example: "Score: {}"
+        self.template_method = template_method  # Method that returns the value to be inserted in the template
+    
+    def draw(self):
+        value = self.template_method()
+        super().draw(self.template_text.format(value))
+
 
 class InteractiveLabel(Label):
+    """
+    A label that can be clicked.
+    """
     def __init__(self, screen, x, y, width, height, text=''):
         super().__init__(screen, x, y, text)
         self.width = width

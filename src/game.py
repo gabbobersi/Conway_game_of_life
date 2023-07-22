@@ -3,7 +3,7 @@ import sys
 import pygame
 from UI_elements.color import *
 from UI_elements.button import Button
-from UI_elements.label import Label
+from UI_elements.label import Label, TemplateLabel
 from UI_elements.toolbar import ToolbarFactory
 
 from grid import Grid
@@ -149,15 +149,15 @@ class Game:
         btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 0, 0)
 
         # Setting up labels, based on the toolbar position.
-        lbl_alive = Label(self.screen.get_screen(), 10, 100)
-        lbl_killed = Label(self.screen.get_screen(), 10, 100)
-        lbl_born = Label(self.screen.get_screen(), 10, 100)
+        lbl_alive = TemplateLabel(self.screen.get_screen(), 10, 100, 'Alive cells: {}', grid.get_alive_cells)
+        lbl_killed = TemplateLabel(self.screen.get_screen(), 10, 100, 'Dead cells: {}', grid.get_dead_cells)
+        lbl_born = TemplateLabel(self.screen.get_screen(), 10, 100, 'Born cells: {}', grid.get_born_cells)
 
         # Create toolbar
         buttons = [btn_Stop, btn_Activate, btn_Randomize, btn_Clear, btn_Invasion, btn_main_menu]
-        labels = [lbl_alive, lbl_killed, lbl_born]
+        template_labels = [lbl_alive, lbl_killed, lbl_born]
 
-        factory_toolbar = ToolbarFactory(self.screen, BLACK, buttons, labels)
+        factory_toolbar = ToolbarFactory(self.screen, BLACK, buttons, template_labels)
         toolbar = factory_toolbar.get_toolbar(self.options.toolbar_position)
     
         self.screen.fill(WHITE)
@@ -185,7 +185,6 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
                     cell_x = mouse_pos[0] // self.cell_size
                     cell_y = mouse_pos[1] // self.cell_size
-                    print(cell_x, cell_y)
 
                     if event.button == 1:           # Left mouse button
                         grid.activate_cell(cell_x, cell_y, self.team_manager.player.color)
@@ -211,7 +210,6 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
                     cell_x = mouse_pos[0] // self.cell_size
                     cell_y = mouse_pos[1] // self.cell_size
-                    print(cell_x, cell_y)
 
                     if pygame.mouse.get_pressed()[0]:    # Left mouse button       
                         grid.activate_cell(cell_x, cell_y, self.team_manager.player.color)
@@ -237,17 +235,7 @@ class Game:
                 print("An error occurred :: no button is active! Please restart the game.")
                 self.state = 'quit'
                 return
-
             toolbar.draw()
-            # btn_Randomize.draw()
-            # btn_Clear.draw()
-            # btn_Invasion.draw()
-            # btn_main_menu.draw()
-
-            lbl_alive.draw('Alive cells: {}'.format(grid.alive_cells_counter))
-            lbl_killed.draw('Killed cells: {}'.format(grid.killed_cells_counter))
-            lbl_born.draw('Born cells: {}'.format(grid.born_cells_counter))
-
             pygame.display.update()
             CLOCK.tick(self.options.tick_speed)
 

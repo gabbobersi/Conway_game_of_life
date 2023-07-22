@@ -70,15 +70,20 @@ class TopToolbar(Toolbar):
         height = SETTINGS['top']['height']
         super().__init__(screen, screen.width, height, background_color, buttons, labels)
         self.space_per_button = screen.width / len(buttons)
+        self.labels_starting_x = 20
+        self.labels_starting_y = height + 5
+        self.label_x = SETTINGS['top']['label_position']['additional_x']
+        self.label_y = SETTINGS['top']['label_position']['additional_y']
 
     def draw(self):
         """
         Draw the toolbar first, then its buttons.
         """
         super().draw()
-        self.draw_buttons()
+        self.__draw_buttons()
+        self.__draw_labels()
 
-    def draw_buttons(self):
+    def __draw_buttons(self):
         horizontal_space = 0
         for button in self.buttons:
             # new_x=None, new_y=None, new_width=None, new_height=None, background_color = None, label = None
@@ -86,16 +91,13 @@ class TopToolbar(Toolbar):
             horizontal_space += self.space_per_button
             button.draw()
 
-    def draw_labels(self):
-        offset = 1
+    def __draw_labels(self):
+        y_offset = 0
         for label in self.labels:
-            label.update(new_x = self.width + label.get_label_position()[0], new_y = label.get_label_position()[1] * offset)
-            offset += 1
+            label.update(new_x = self.labels_starting_x + self.label_x, 
+                         new_y = self.labels_starting_y + self.label_y + y_offset)
+            y_offset += 30
             label.draw()
-
-    def get_label_position(self):
-        position = SETTINGS['top']['label_position']
-        return (position['additional_x'], position['additional_y'])
 
 class LeftSideToolbar(Toolbar):
     """
