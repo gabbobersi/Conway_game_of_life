@@ -49,3 +49,10 @@ They may not represent the current state of the project.
   - [ ] Client side
   - [ ] Hidden layer (queue of actions)
   - [ ] Draw mode with limited resources per team 
+## Enginering tradeoffs
+- **More iterations on the grid:**
+  - Positive: code is more organized and maintainable.
+  - Negative: in grid.py module, different methods require different iterations on the same matrix (which is the grid, listxlist).
+- **Factory patterns:**
+  - Positive: More abstraction means less lines of code, since I don't have to use if/else to correct the flow of the instances generation.
+  - Negative: More abstraction means more documentation needs and more probability of using the wrong implementation (eg Using directly the class instead of the factory).
