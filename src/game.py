@@ -15,7 +15,6 @@ TITLE = pygame.display.set_caption('Game of Life')
 CLOCK = pygame.time.Clock()
 
 VALID_GAME_STATES = [
-    'draw',             # Game is stopped. 
     'play',             # Game is running.
     'main_menu',        # Main menu is displayed. User can't interact with the grid. Animation is played.
     'option_menu',      # Option menu is displayed. User can't interact with the grid.
@@ -25,13 +24,16 @@ VALID_GAME_STATES = [
 class Game:
     def __init__(self):
         pygame.init()
-        self.options = Options()        
-        self.window_width, self.window_height = self.options.resolution        
-        self.team_manager = TeamManager('player', self.options.player_color, 'enemy', self.options.enemy_color)
+        self.options = Options()      
+
+        self.window_width, self.window_height = self.options.resolution.get('value')
+        self.team_manager = TeamManager('player', 'enemy', self.options)
 
         self.screen = Screen(self.window_width, self.window_height)
         self.state = 'main_menu'
         self.cell_size = 10          
+
+        self.tick_speed = self.options.tick_speed.get('value')
 
     @property
     def state(self):
@@ -75,30 +77,29 @@ class Game:
             btn_Quit.draw()
 
             pygame.display.update()
-            CLOCK.tick(self.options.tick_speed)        
+            CLOCK.tick(self.tick_speed)        
 
     def option_menu(self):
         self.screen.fill(WHITE)
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
         
+        # Available settings to change
+        opt_toolbar_position = self.options.toolbar_position.get('name')
+        opt_player_color = self.options.player_color.get('name')
+        opt_resolution = self.options.resolution.get('name')
+        opt_tick_speed = self.options.tick_speed.get('name')
+
         distance_from_center = 100
-        btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar: {}'.format(self.options.toolbar_position), True,
+        btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar: {}'.format(opt_toolbar_position), True,
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 220, 300)
-        btn_change_resolution = Button(self.screen.get_screen(), 'Change resolution', True, 
+        btn_change_resolution = Button(self.screen.get_screen(), 'Resolution: {}'.format(opt_resolution), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 150, 300)
-        btn_change_player_color = Button(self.screen.get_screen(), 'Change player color', True, 
+        btn_change_player_color = Button(self.screen.get_screen(), 'Player color: {}'.format(opt_player_color), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 70, 300)
-        btn_change_game_speed = Button(self.screen.get_screen(), 'Change game speed', True, 
+        btn_change_game_speed = Button(self.screen.get_screen(), 'Game speed: {}'.format(opt_tick_speed), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1], 300)
         btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] + 70, 300)
-
-        # Settings available to change
-        opt_toolbar_position = self.options.toolbar_position
-        opt_player_color = None
-        opt_enemy_color = None
-        opt_resolution = None
-        opt_tick_speed = None
 
         while True:
             for event in pygame.event.get():
@@ -109,22 +110,27 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
                     if btn_main_menu.is_clicked(mouse_pos):
                         # Updating options
-                        self.options.toolbar_position = opt_toolbar_position if opt_toolbar_position else self.options.toolbar_position
-                        self.options.player_color = opt_player_color if opt_player_color else self.options.player_color
-                        self.options.enemy_color = opt_enemy_color if opt_enemy_color else self.options.enemy_color
-                        self.options.resolution = opt_resolution if opt_resolution else self.options.resolution
-                        self.options.tick_speed = opt_tick_speed if opt_tick_speed else self.options.tick_speed
+                        self.options.toolbar_position = opt_toolbar_position
+                        self.options.player_color = opt_player_color
+                        self.options.resolution = opt_resolution
+                        self.options.tick_speed = opt_tick_speed
                         self.state = 'main_menu'
                         return
                     if btn_toolbar_position.is_clicked(mouse_pos):
-                        if opt_toolbar_position == 'top':
-                            opt_toolbar_position = 'left'
-                            btn_toolbar_position.update(text='Toolbar: LEFT')
-                            print("Label attiva: left")
-                        elif opt_toolbar_position == 'left':
-                            opt_toolbar_position = 'top'
-                            btn_toolbar_position.update(text='Toolbar: TOP')
-                            print("Label attiva: top")
+                        opt_toolbar_position = self.options.toolbar_position
+                        btn_toolbar_position.update(text='Toolbar: {}'.format(opt_toolbar_position.get('name').upper()))
+
+                    if btn_change_resolution.is_clicked(mouse_pos):
+                        opt_resolution = self.options.resolution
+                        btn_change_resolution.update(text='Resolution: {}'.format(opt_resolution.get('name')))
+
+                    if btn_change_game_speed.is_clicked(mouse_pos):
+                        opt_tick_speed = self.options.tick_speed
+                        btn_change_game_speed.update(text='Game speed: {}'.format(opt_tick_speed.get('name')))
+
+                    if btn_change_player_color.is_clicked(mouse_pos):
+                        opt_player_color = self.options.player_color
+                        btn_change_player_color.update(text='Player color: {}'.format(opt_player_color.get('name')))
 
             btn_change_resolution.draw()
             btn_change_player_color.draw()
@@ -133,7 +139,7 @@ class Game:
             btn_toolbar_position.draw()
 
             pygame.display.update()
-            CLOCK.tick(self.options.tick_speed)
+            CLOCK.tick(self.tick_speed)
 
     def play(self):
         self.screen.fill(WHITE)
@@ -158,7 +164,7 @@ class Game:
         template_labels = [lbl_alive, lbl_killed, lbl_born]
 
         factory_toolbar = ToolbarFactory(self.screen, BLACK, buttons, template_labels)
-        toolbar = factory_toolbar.get_toolbar(self.options.toolbar_position)
+        toolbar = factory_toolbar.get_toolbar(self.options.toolbar_position.get('value'))
     
         self.screen.fill(WHITE)
 
@@ -220,13 +226,13 @@ class Game:
 
             if active_button == btn_Activate:
                 # Activate btn is visible. Stop the game, enter "draw" mode.
-                self.options.tick_speed = 60
+                self.tick_speed = 60
                 btn_Stop.visible = False
                 btn_Activate.visible = True
                 btn_Activate.draw()
             elif active_button == btn_Stop:
                 # Stop btn is visible. Activate the game, enter "game of life" mode.
-                self.options.tick_speed = 10
+                self.tick_speed = 10
                 btn_Stop.visible = True
                 btn_Activate.visible = False
                 grid.apply_game_rules()
@@ -237,20 +243,20 @@ class Game:
                 return
             toolbar.draw()
             pygame.display.update()
-            CLOCK.tick(self.options.tick_speed)
+            CLOCK.tick(self.tick_speed)
 
     def run(self):
         while True:
             if self.state == 'main_menu':
-                self.options.tick_speed = 40
+                self.tick_speed = 40
                 self.main_menu()
 
             elif self.state == 'option_menu':
-                self.options.tick_speed = 40
+                self.tick_speed = 40
                 self.option_menu()
             
             elif self.state == 'play':
-                self.options.tick_speed = 4
+                self.tick_speed = 4
                 self.play()
             
             elif self.state == 'quit':

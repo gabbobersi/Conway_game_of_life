@@ -23,9 +23,6 @@ class Grid:
 
     def apply_game_rules(self):
         new_grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
-        self._alive_cells_counter = 0
-        self._dead_cells_counter = 0
-        self._born_cells_counter = 0
 
         for x in range(self.width):
             for y in range(self.height):
@@ -40,7 +37,7 @@ class Grid:
     def modify_cell_by_rule(self, x, y, color, new_grid):
         live_neighbors = self.count_live_neighbors(x, y, color)
 
-        if self.grid[y][x] == color:  # Live cell
+        if self.grid[y][x] == color:  # Live cell   
             if live_neighbors < 2 or live_neighbors > 3:
                 self._dead_cells_counter += 1
                 new_grid[y][x] = WHITE  # Dies for underpopulation or overpopulation
@@ -54,6 +51,10 @@ class Grid:
         return new_grid
 
     def draw(self):
+        self._alive_cells_counter = 0
+        self._dead_cells_counter = 0
+        self._born_cells_counter = 0
+
         for x in range(self.width):
             for y in range(self.height):
                 rect = pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
