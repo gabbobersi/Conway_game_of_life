@@ -29,7 +29,8 @@ They may not represent the current state of the project.
 - [ ] Blue team cells can "eat" red team cells.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
 - [ ] Area under the toolbar should be considered "dead", like out of screen.
-
+## TODO general QOL
+- [ ] Replace matrices and lists creation with Numpy.
 ## TODO Features
 - [x] Change Team.get_opposite_team into Team.get_opposite_color
 - [x] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
