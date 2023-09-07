@@ -1,46 +1,8 @@
 """
 Toolbars are created with a factory. They should not be used directly.
 """
-
 import pygame
-
-# Data structure to maintain coherence between the toolbar type and other UI elements.
-SETTINGS = {
-    'top': {
-        'height': 50,
-        'label_position': {
-            'additional_x': 0,
-            'additional_y': 20
-        }
-    },
-    'left': {
-        'width': 200,
-        'label_position': {
-            'additional_x': 20,
-            'additional_y': 0
-        }
-    }
-}
-
-VALID_TOOLBARS = SETTINGS.keys()
-
-class ToolbarFactory:
-    """
-    This class should be used to dinamically create toolbars instances.
-    """
-    def __init__(self, screen, background_color, buttons, labels):
-        self.screen = screen
-        self.background_color = background_color
-        self.buttons = buttons
-        self.labels = labels
-
-    def get_toolbar(self, type_of_toolbar):
-        if type_of_toolbar == 'top':
-            return TopToolbar(self.screen, self.background_color, self.buttons, self.labels)
-        elif type_of_toolbar == 'left':
-            return LeftSideToolbar(self.screen, self.background_color, self.buttons, self.labels)
-        else:
-            raise ValueError("Error :: Invalid toolbar type {}. Valid types are: {}".format(type_of_toolbar, VALID_TOOLBARS))
+from .commons import SETTINGS
 
 class Toolbar:
     """
@@ -60,6 +22,7 @@ class Toolbar:
         Draw the toolbar.
         """
         pygame.draw.rect(self.screen.get_screen(), self.background_color, (0, 0, self.width, self.height))     
+
 
 class TopToolbar(Toolbar):
     """
@@ -98,6 +61,7 @@ class TopToolbar(Toolbar):
                          new_y = self.labels_starting_y + self.label_y + y_offset)
             y_offset += 30
             label.draw()
+
 
 class LeftSideToolbar(Toolbar):
     """

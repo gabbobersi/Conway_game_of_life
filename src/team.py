@@ -1,19 +1,14 @@
+from options import Options
+
 class Team:
-    def __init__(self, name, options_instance):
+    def __init__(self, name, color):
         self.name = name
-        self.color = options_instance._player_color.get('value')
+        self.color = color
     
 class TeamManager:
     """
     Manage player and enemy teams.
     """
-    def __init__(self, player_name, enemy_name, options_instance):
-        self.player = Team(player_name, options_instance)
-        self.enemy = Team(enemy_name, options_instance)        
-
-    def get_enemy_color(self):
-        """
-        WIP.
-        Returns the opposite team's color.
-        """
-        return self.enemy.color
+    def __init__(self, player_name:str, enemy_name:str, options_instance:Options):
+        self.player = Team(player_name, options_instance._player_color.get('value'))
+        self.enemy = Team(enemy_name, options_instance._enemy_color)

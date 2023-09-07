@@ -2,17 +2,18 @@ import random
 
 import pygame
 
-from UI_elements.color import WHITE
+from UI_elements.color import Color
+from team import TeamManager
 
 class Grid:
-    def __init__(self, screen, cell_size, team_manager):
+    def __init__(self, screen: pygame.Surface, cell_size: int, team_manager: TeamManager):
         self.screen = screen
         self.window_width, self.window_height = self.screen.get_size()
 
         self.cell_size = cell_size
         self.width = self.window_width // self.cell_size
         self.height = (self.window_height) // self.cell_size
-        self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
+        self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
 
         self.player = team_manager.player
         self.enemy = team_manager.enemy
@@ -22,7 +23,7 @@ class Grid:
         self._born_cells_counter = 0
 
     def apply_game_rules(self):
-        new_grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
+        new_grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
 
         for x in range(self.width):
             for y in range(self.height):
@@ -34,13 +35,13 @@ class Grid:
             for y in range(self.height):
                 self.grid[y][x] = new_grid[y][x]
 
-    def modify_cell_by_rule(self, x, y, color, new_grid):
+    def modify_cell_by_rule(self, x: int, y: int, color: tuple[int, int, int], new_grid: list):
         live_neighbors = self.count_live_neighbors(x, y, color)
 
         if self.grid[y][x] == color:  # Live cell   
             if live_neighbors < 2 or live_neighbors > 3:
                 self._dead_cells_counter += 1
-                new_grid[y][x] = WHITE  # Dies for underpopulation or overpopulation
+                new_grid[y][x] = Color.WHITE.value  # Dies for underpopulation or overpopulation
             else:
                 new_grid[y][x] = color  # Survives to the next generation
                 self._alive_cells_counter += 1
@@ -61,10 +62,10 @@ class Grid:
                 pygame.draw.rect(self.screen, self.grid[y][x], rect)
 
     def clear(self):
-        self.grid = [[WHITE for _ in range(self.width)] for _ in range(self.height)]
+        self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
         self.__reset_cells_counter()
 
-    def count_live_neighbors(self, x, y, color):
+    def count_live_neighbors(self, x: int, y: int, color: tuple[int, int, int]):
         """
         It counts "live" neighbors of a cell.
         """
@@ -83,22 +84,22 @@ class Grid:
                         count += 1
         return count
     
-    def activate_cell(self, x, y, color):
-        if self.grid[y][x] == WHITE:
+    def activate_cell(self, x: int, y: int, color: tuple[int, int, int]):
+        if self.grid[y][x] == Color.WHITE.value:
             self.set_color(x, y, color)
         else:
             print("Program is trying to colorate an already activated cells!!!!")
 
-    def deactivate_cell(self, x, y):
-        self.set_color(x, y, WHITE)
+    def deactivate_cell(self, x: int, y: int):
+        self.set_color(x, y, Color.WHITE.value)
     
-    def get_color(self, x, y):
+    def get_color(self, x: int, y: int):
         return self.grid[y][x]
     
-    def set_color(self, x, y, color):
+    def set_color(self, x: int, y: int, color: tuple[int, int, int]):
         self.grid[y][x] = color
 
-    def randomize(self, color=None):
+    def randomize(self, color:tuple[int, int, int]=None):
         """
         It randomizes the grid.
         """
@@ -108,10 +109,10 @@ class Grid:
         for x in range(self.width):
             for y in range(self.height):
                 rand = random.randint(0, 4)
-                if rand == 0 and self.grid[y][x] == WHITE:
+                if rand == 0 and self.grid[y][x] == Color.WHITE.value:
                     self.grid[y][x] = color
                 elif rand == 1 and self.grid[y][x] not in (self.player.color, self.enemy.color):
-                    self.grid[y][x] = WHITE
+                    self.grid[y][x] = Color.WHITE.value
 
     # def get_alive_cells(self, color):
     #     """

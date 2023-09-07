@@ -1,10 +1,10 @@
 import sys
 
 import pygame
-from UI_elements.color import *
+from UI_elements.color import Color
 from UI_elements.button import Button
-from UI_elements.label import Label, TemplateLabel
-from UI_elements.toolbar import ToolbarFactory
+from UI_elements.label import TemplateLabel
+from UI_elements.toolbar.factory import ToolbarFactory
 
 from grid import Grid
 from screen import Screen
@@ -40,7 +40,7 @@ class Game:
         return self._state
 
     @state.setter
-    def state(self, value):
+    def state(self, value:str):
         if value not in VALID_GAME_STATES:
             print("Error :: Invalid game stated {}".format(value))
             self.state = 'quit'
@@ -48,7 +48,7 @@ class Game:
         self._state = value
 
     def main_menu(self):
-        self.screen.fill(WHITE)
+        self.screen.fill(Color.WHITE.value)
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
 
         btn_Start = Button(self.screen.get_screen(), 'Start', True, middle_screen[0], middle_screen[1] - 150)
@@ -80,14 +80,14 @@ class Game:
             CLOCK.tick(self.tick_speed)        
 
     def option_menu(self):
-        self.screen.fill(WHITE)
+        self.screen.fill(Color.WHITE.value)
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
         
         # Available settings to change
-        opt_toolbar_position = self.options.toolbar_position.get('name')
-        opt_player_color = self.options.player_color.get('name')
-        opt_resolution = self.options.resolution.get('name')
-        opt_tick_speed = self.options.tick_speed.get('name')
+        opt_toolbar_position = self.options._toolbar_position.get('name')
+        opt_player_color = self.options._player_color.get('name')
+        opt_resolution = self.options._resolution.get('name')
+        opt_tick_speed = self.options._tick_speed.get('name')
 
         distance_from_center = 100
         btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar: {}'.format(opt_toolbar_position), True,
@@ -142,7 +142,7 @@ class Game:
             CLOCK.tick(self.tick_speed)
 
     def play(self):
-        self.screen.fill(WHITE)
+        self.screen.fill(Color.WHITE.value)
         grid = Grid(self.screen.get_screen(), self.cell_size, self.team_manager)
 
         btn_Stop = Button(self.screen.get_screen(), 'Stop', False, 0, 0)
@@ -151,7 +151,7 @@ class Game:
 
         btn_Randomize = Button(self.screen.get_screen(), 'Random', True, 0, 0)
         btn_Clear = Button(self.screen.get_screen(), 'Clear', True, 0, 0)
-        btn_Invasion = Button(self.screen.get_screen(), 'Invasion', True, 0, 0, background_color=CUSTOM_BLUE)
+        btn_Invasion = Button(self.screen.get_screen(), 'Invasion', True, 0, 0, background_color=Color.CUSTOM_BLUE.value)
         btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 0, 0)
 
         # Setting up labels, based on the toolbar position.
@@ -163,10 +163,10 @@ class Game:
         buttons = [btn_Stop, btn_Activate, btn_Randomize, btn_Clear, btn_Invasion, btn_main_menu]
         template_labels = [lbl_alive, lbl_killed, lbl_born]
 
-        factory_toolbar = ToolbarFactory(self.screen, BLACK, buttons, template_labels)
+        factory_toolbar = ToolbarFactory(self.screen, Color.BLACK.value, buttons, template_labels)
         toolbar = factory_toolbar.get_toolbar(self.options.toolbar_position.get('value'))
     
-        self.screen.fill(WHITE)
+        self.screen.fill(Color.WHITE.value)
 
         while True:
             for event in pygame.event.get():

@@ -1,4 +1,4 @@
-from UI_elements.color import *
+from UI_elements.color import Color
 
 TOOLBARS = [
     {'name': 'Top', 'value': 'top'},
@@ -18,9 +18,9 @@ TICK_SPEEDS = [
 ]
 
 PLAYER_COLORS = [
-    {'name': 'Red', 'value': CUSTOM_RED},
-    {'name': 'Green', 'value': CUSTOM_GREEN},
-    {'name': 'Black', 'value': CUSTOM_BLACK}
+    {'name': 'Red', 'value': Color.CUSTOM_RED.value},
+    {'name': 'Green', 'value': Color.CUSTOM_GREEN.value},
+    {'name': 'Black', 'value': Color.CUSTOM_BLACK.value}
 ]
 
 class Options:
@@ -42,7 +42,7 @@ class Options:
     _tick_speed = TICK_SPEEDS[0]
     _toolbar_position = TOOLBARS[0]
     _player_color = PLAYER_COLORS[0]
-    _enemy_color = CUSTOM_BLUE
+    _enemy_color = Color.CUSTOM_BLUE.value
     _resolution = RESOLUTIONS[0]
 
     @property
@@ -51,7 +51,7 @@ class Options:
         return self._tick_speed
     
     @tick_speed.setter
-    def tick_speed(self, value):
+    def tick_speed(self, value:int):
         self._tick_speed = value
 
     @property
@@ -59,22 +59,22 @@ class Options:
         self._toolbar_position = self.toolbar_generator.__next__()
         return self._toolbar_position
     
-    
     @toolbar_position.setter
-    def toolbar_position(self, value):
+    def toolbar_position(self, value:str):
         if value not in ('top', 'left'):
             print("Error :: Invalid toolbar position {}".format(value))
             self._toolbar_position = 'top'
             return
-        self._toolbar_position = value
-        
+        key = self._toolbar_position.get('name')
+        [toolbar for toolbar in TOOLBARS if toolbar.get('name') == key][0].update({'name': key, 'value': value})
+
     @property
     def player_color(self):
         self._player_color = self.player_generator.__next__()
         return self._player_color
     
     @player_color.setter
-    def player_color(self, value):
+    def player_color(self, value:tuple[int, int, int]):
         self._player_color = value
 
     @property
@@ -82,7 +82,7 @@ class Options:
         return self._enemy_color
     
     @enemy_color.setter
-    def enemy_color(self, value):
+    def enemy_color(self, value:tuple[int, int, int]):
         self._enemy_color = value
     
     @property
@@ -91,9 +91,10 @@ class Options:
         return self._resolution
     
     @resolution.setter
-    def resolution(self, value):
+    def resolution(self, value:tuple[int, int, int]):
         self._resolution = value
 
+    # Singleton
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Options, cls).__new__(cls)

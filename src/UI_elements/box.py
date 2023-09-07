@@ -1,19 +1,15 @@
 import pygame
 
-from UI_elements.color import BLACK
+from UI_elements.color import Color
 from base_classes.entity import InteractiveEntity
 
 class Box(InteractiveEntity):
     """
     A simple box.
     """
-    def __init__(self, screen, x, y, width, height, background_color):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+    def __init__(self, screen:pygame.Surface, x:int, y:int, width:int, height:int, background_color:tuple[int, int, int]):
+        super().__init__(x, y, width, height)
         self.screen = screen
-        self.window_width, self.window_height = pygame.display.get_surface().get_size()
         self.background_color = background_color
 
     def draw(self):
@@ -22,9 +18,9 @@ class Box(InteractiveEntity):
         """
         settings = (self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.screen, self.background_color, settings, 0)
-        pygame.draw.rect(self.screen, BLACK, settings, 1)   # Draw a black border around the box
+        pygame.draw.rect(self.screen, Color.BLACK.value, settings, 1)   # Draw a black border around the box
 
-    def update(self, new_x, new_y, new_width, new_height, background_color):
+    def update(self, new_x:int, new_y:int, new_width:int, new_height:int, new_background_color:tuple[int, int, int]):
         """
         Update box's attributes.
         """
@@ -36,5 +32,5 @@ class Box(InteractiveEntity):
             self.width = new_width
         if new_height:
             self.height = new_height
-        if background_color:
-            self.background_color = background_color
+        if new_background_color:
+            self.background_color = new_background_color

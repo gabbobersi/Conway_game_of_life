@@ -1,20 +1,22 @@
+from typing import Callable
+
 import pygame
 
-from UI_elements.color import BLACK
+from base_classes.entity import Entity
+from UI_elements.color import Color
 
-class Label:
+class Label(Entity):
     """
     A simple label.
     """
-    def __init__(self, screen, x=20, y=20, text='', color=BLACK):
-        self.font = pygame.font.Font('fonts/Gameplay.ttf', 14) 
+    def __init__(self, screen:pygame.Surface, x:int=20, y:int=20, text:str='', color:tuple[int, int, int]=Color.BLACK.value):
+        super().__init__(x, y)
         self.screen = screen
+        self.font = pygame.font.Font('fonts/Gameplay.ttf', 14) 
         self.text = text
-        self.x = x
-        self.y = y
         self.color = color
     
-    def draw(self, custom_text=''):
+    def draw(self, custom_text:str=''):
         if custom_text:
             self.text = custom_text
         text = self.font.render(self.text, True, self.color)
@@ -22,7 +24,7 @@ class Label:
         rect.topleft = (self.x, self.y)
         self.screen.blit(text, rect)
 
-    def update(self, new_x=None, new_y=None, new_text=None, new_color=None):
+    def update(self, new_x:int=None, new_y:int=None, new_text:str=None, new_color:tuple[int, int, int]=None):
         """
         Update label's attributes.
         """
@@ -40,7 +42,7 @@ class TemplateLabel(Label):
     """
     A label whose text is generated via template.
     """
-    def __init__(self, screen, x, y, template_text, template_method, color=BLACK):
+    def __init__(self, screen:pygame.Surface, x:int, y:int, template_text:str, template_method:Callable, color:tuple[int, int, int]=Color.BLACK.value):
         super().__init__(screen, x, y, '', color=color)
         self.template_text = template_text      # Example: "Score: {}"
         self.template_method = template_method  # Method that returns the value to be inserted in the template
@@ -54,12 +56,12 @@ class InteractiveLabel(Label):
     """
     A label that can be clicked.
     """
-    def __init__(self, screen, x, y, width, height, text=''):
+    def __init__(self, screen:pygame.Surface, x:int, y:int, width:int, height:int, text:str=''):
         super().__init__(screen, x, y, text)
         self.width = width
         self.height = height
 
-    def is_clicked(self, event, mouse_pos):
+    def is_clicked(self, event:pygame.event.Event, mouse_pos:tuple[int, int, int]):
         """
         Check if the mouse is over the button, during a MOUSEBUTTONDOWN event.
 
