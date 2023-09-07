@@ -52,8 +52,14 @@ They may not represent the current state of the project.
   - [ ] Draw mode with limited resources per team 
 ## Engineering tradeoffs
 - **More iterations on the grid:**
+  - Note: Matrices operations will be ported to Numpy in the future.
   - Positive: code is more organized and maintainable.
   - Negative: in grid.py module, different methods require different iterations on the same matrix (which is the grid, listxlist).
 - **Factory patterns:**
   - Positive: More abstraction means less lines of code, since I don't have to use if/else to correct the flow of the instances generation.
   - Negative: More abstraction means more need for documentation and more likely to use the wrong implementation (e.g. Using directly the class instead of the factory).
+- **Inheritance mixed with composition**:
+  - Note: Is clear that UI elements follow the inheritance model pattern well, but is this the best choice?
+  To put maintainability and readability as priority, as Gang Of Four also suggests, I decided to implement both. 
+  - Positive: maintainability, readability, less lines of code.
+  - Negative: different patterns for different UI elements.

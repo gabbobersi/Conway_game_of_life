@@ -5,6 +5,7 @@ import pygame
 from UI_elements.color import Color
 from team import TeamManager
 
+
 class Grid:
     def __init__(self, screen: pygame.Surface, cell_size: int, team_manager: TeamManager):
         self.screen = screen
