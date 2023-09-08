@@ -1,4 +1,8 @@
 from UI_elements.color import Color
+from screen import Screen
+
+import pygame
+
 
 class OptionsData:
     # First element of each list is the default one
@@ -70,6 +74,15 @@ class Options:
         self.__tick_speed = self.__data.TICK_SPEEDS['default']
         self.__player_color = self.__data.PLAYER_COLORS['default']
         self.__enemy_color = self.__data.ENEMY_COLORS['default']
+
+        self.clock = pygame.time.Clock()
+        self.window_width, self.window_height = self.get_actual_value('resolution').get('value')
+        self.screen = Screen(self.window_width, self.window_height)
+        self.cell_size = 10
+
+
+    def clock_tick(self):
+        self.clock.tick(self.__tick_speed.get('value'))
 
     def get_actual_value(self, element):
         if element == 'toolbar':

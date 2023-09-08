@@ -7,13 +7,11 @@ from team import TeamManager
 
 
 class Grid:
-    def __init__(self, screen: pygame.Surface, cell_size: int, team_manager: TeamManager):
-        self.screen = screen
-        self.window_width, self.window_height = self.screen.get_size()
-
-        self.cell_size = cell_size
-        self.width = self.window_width // self.cell_size
-        self.height = (self.window_height) // self.cell_size
+    def __init__(self, options, team_manager: TeamManager):
+        self.options = options
+        self.options.cell_size = 10          
+        self.width = self.options.window_width // self.options.cell_size
+        self.height = self.options.window_height // self.options.cell_size
         self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
 
         self.player = team_manager.player
@@ -59,8 +57,8 @@ class Grid:
 
         for x in range(self.width):
             for y in range(self.height):
-                rect = pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
-                pygame.draw.rect(self.screen, self.grid[y][x], rect)
+                rect = pygame.Rect(x * self.options.cell_size, y * self.options.cell_size, self.options.cell_size, self.options.cell_size)
+                pygame.draw.rect(self.options.screen.get_screen(), self.grid[y][x], rect)
 
     def clear(self):
         self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
