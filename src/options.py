@@ -80,7 +80,6 @@ class Options:
         self.screen = Screen(self.window_width, self.window_height)
         self.cell_size = 10
 
-
     def clock_tick(self):
         self.clock.tick(self.__tick_speed.get('value'))
 

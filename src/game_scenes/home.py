@@ -27,7 +27,6 @@ class HomeScene:
                     elif btn_Option.is_clicked(mouse_pos):
                         return Scenes.OPTION.value
                     elif btn_Quit.is_clicked(mouse_pos):
-                        print("QUIT CLICCATO")
                         return Scenes.QUIT.value
             
             btn_Start.draw()
