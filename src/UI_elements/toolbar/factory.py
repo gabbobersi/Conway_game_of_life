@@ -11,7 +11,7 @@ class ToolbarFactory:
         self.buttons = buttons
         self.labels = labels
 
-    def get_toolbar(self, type_of_toolbar):
+    def get_instance(self, type_of_toolbar):
         if type_of_toolbar == 'top':
             return TopToolbar(self.screen, self.background_color, self.buttons, self.labels)
         elif type_of_toolbar == 'left':

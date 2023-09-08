@@ -26,14 +26,14 @@ class Game:
         pygame.init()
         self.options = Options()      
 
-        self.window_width, self.window_height = self.options.resolution.get('value')
+        self.window_width, self.window_height = self.options.get_actual_value('resolution').get('value')
         self.team_manager = TeamManager('player', 'enemy', self.options)
 
         self.screen = Screen(self.window_width, self.window_height)
         self.state = 'main_menu'
         self.cell_size = 10          
 
-        self.tick_speed = self.options.tick_speed.get('value')
+        self.tick_speed = self.options.get_actual_value('tick_speed').get('value')
 
     @property
     def state(self):
@@ -84,20 +84,24 @@ class Game:
         middle_screen = (self.window_width - 100) // 2, (self.window_height - 200) // 2
         
         # Available settings to change
-        opt_toolbar_position = self.options._toolbar_position.get('name')
-        opt_player_color = self.options._player_color.get('name')
-        opt_resolution = self.options._resolution.get('name')
-        opt_tick_speed = self.options._tick_speed.get('name')
+        opt_toolbar_position = self.options.get_actual_value('toolbar')
+        opt_player_color = self.options.get_actual_value('player_color')
+        opt_resolution = self.options.get_actual_value('resolution')
+        opt_tick_speed = self.options.get_actual_value('tick_speed')
 
         distance_from_center = 100
-        btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar: {}'.format(opt_toolbar_position), True,
+        btn_toolbar_position =  Button(self.screen.get_screen(), 'Toolbar: {}'.format(opt_toolbar_position.get('name')), True,
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 220, 300)
-        btn_change_resolution = Button(self.screen.get_screen(), 'Resolution: {}'.format(opt_resolution), True, 
+        
+        btn_change_resolution = Button(self.screen.get_screen(), 'Resolution: {}'.format(opt_resolution.get('name')), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 150, 300)
-        btn_change_player_color = Button(self.screen.get_screen(), 'Player color: {}'.format(opt_player_color), True, 
+        
+        btn_change_player_color = Button(self.screen.get_screen(), 'Player color: {}'.format(opt_player_color.get('name')), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] - 70, 300)
-        btn_change_game_speed = Button(self.screen.get_screen(), 'Game speed: {}'.format(opt_tick_speed), True, 
+        
+        btn_change_game_speed = Button(self.screen.get_screen(), 'Game speed: {}'.format(opt_tick_speed.get('name')), True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1], 300)
+        
         btn_main_menu = Button(self.screen.get_screen(), 'Main menu', True, 
                                         middle_screen[0] - distance_from_center, middle_screen[1] + 70, 300)
 
@@ -110,26 +114,26 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
                     if btn_main_menu.is_clicked(mouse_pos):
                         # Updating options
-                        self.options.toolbar_position = opt_toolbar_position
-                        self.options.player_color = opt_player_color
-                        self.options.resolution = opt_resolution
-                        self.options.tick_speed = opt_tick_speed
+                        self.options.set_value('toolbar', opt_toolbar_position)
+                        self.options.set_value('player_color', opt_player_color)
+                        self.options.set_value('resolution', opt_resolution)
+                        self.options.set_value('tick_speed', opt_tick_speed)
                         self.state = 'main_menu'
                         return
                     if btn_toolbar_position.is_clicked(mouse_pos):
-                        opt_toolbar_position = self.options.toolbar_position
-                        btn_toolbar_position.update(text='Toolbar: {}'.format(opt_toolbar_position.get('name').upper()))
+                        opt_toolbar_position = self.options.get_next_value('toolbar')
+                        btn_toolbar_position.update(text='Toolbar: {}'.format(opt_toolbar_position.get('name')))
 
                     if btn_change_resolution.is_clicked(mouse_pos):
-                        opt_resolution = self.options.resolution
+                        opt_resolution = self.options.get_next_value('resolution')
                         btn_change_resolution.update(text='Resolution: {}'.format(opt_resolution.get('name')))
 
                     if btn_change_game_speed.is_clicked(mouse_pos):
-                        opt_tick_speed = self.options.tick_speed
+                        opt_tick_speed = self.options.get_next_value('tick_speed')
                         btn_change_game_speed.update(text='Game speed: {}'.format(opt_tick_speed.get('name')))
 
                     if btn_change_player_color.is_clicked(mouse_pos):
-                        opt_player_color = self.options.player_color
+                        opt_player_color = self.options.get_next_value('player_color')
                         btn_change_player_color.update(text='Player color: {}'.format(opt_player_color.get('name')))
 
             btn_change_resolution.draw()
@@ -164,7 +168,7 @@ class Game:
         template_labels = [lbl_alive, lbl_killed, lbl_born]
 
         factory_toolbar = ToolbarFactory(self.screen, Color.BLACK.value, buttons, template_labels)
-        toolbar = factory_toolbar.get_toolbar(self.options.toolbar_position.get('value'))
+        toolbar = factory_toolbar.get_instance(self.options.get_actual_value('toolbar').get('value'))
     
         self.screen.fill(Color.WHITE.value)
 

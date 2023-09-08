@@ -16,3 +16,7 @@ class Color(Enum):
     CUSTOM_BLUE: tuple[int, int, int]= (71, 71, 255)
     CUSTOM_GREEN: tuple[int, int, int]= (71, 255, 71)
     CUSTOM_BLACK: tuple[int, int, int]= (71, 71, 71)
+    CUSTOM_YELLOW: tuple[int, int, int]= (255, 255, 71)
+    CUSTOM_WHITE: tuple[int, int, int]= (255, 255, 255)
+    CUSTOM_GRAY: tuple[int, int, int]= (200, 200, 200)
+    CUSTOM_LIGHT_GREEN: tuple[int, int, int]= (17, 242, 174)
