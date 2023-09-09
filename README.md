@@ -13,7 +13,8 @@ If the dependencies are met, just run "main.py", and the game should start.
 
 ## Dependencies
 - Python 3.xx
-- pygame module (pip install pygame)
+- pygame module `pip install pygame`
+- numpy module `pip install numpy`
 
 ## Background
 I was searching for a project with fast implementation, quick visual feedback and a lot of room for improvement.

@@ -1,6 +1,5 @@
 from game_scenes.scenes import Scenes
 from UI_elements.color import Color
-from UI_elements.button import Button
 
 import pygame
 

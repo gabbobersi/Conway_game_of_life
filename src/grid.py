@@ -1,11 +1,10 @@
 import random
 
-import pygame
-import numpy as np
-
 from UI_elements.color import Color
 from team import TeamManager
 
+import pygame
+import numpy as np
 
 class Grid:
     def __init__(self, options, team_manager: TeamManager):
@@ -115,17 +114,6 @@ class Grid:
                     self.grid[y][x] = color
                 elif rand == 1 and self.grid[y][x] not in (self.player.color, self.enemy.color):
                     self.grid[y][x] = Color.WHITE.value
-
-    # def get_alive_cells(self, color):
-    #     """
-    #     It counts alive cells.
-    #     """
-    #     count = 0
-    #     for x in range(self.cell_width):
-    #         for y in range(self.cell_height):
-    #             if self.grid[y][x] == color:
-    #                 count += 1
-    #     return count
     
     def get_alive_cells(self):
         """
