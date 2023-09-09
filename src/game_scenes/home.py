@@ -9,6 +9,7 @@ class HomeScene:
         self.options = options
 
     def run(self):
+        self.options.screen_update()    # Change resolution according to the actual options
         self.options.screen.fill(Color.WHITE.value)
         middle_screen = (self.options.window_width - 100) // 2, (self.options.window_height - 200) // 2
 

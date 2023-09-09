@@ -1,3 +1,8 @@
+"""
+Options class creates a singleton object which is shared between all other classes.\n
+In other terms, Options object will be delegated by other classes.\n
+"""
+
 from UI_elements.color import Color
 from screen import Screen
 
@@ -5,7 +10,6 @@ import pygame
 
 
 class OptionsData:
-    # First element of each list is the default one
     TOOLBARS = {
         'default': None,
         'available_values': [
@@ -63,18 +67,21 @@ class Options:
     """
     def __init__(self):
         self.__data = OptionsData()
+        # Setting generators for options rotation
         self.__toolbar_generator = cycler(self.__data.TOOLBARS['available_values'])
         self.__resolution_generator = cycler(self.__data.RESOLUTIONS['available_values'])
         self.__tick_speed_generator = cycler(self.__data.TICK_SPEEDS['available_values'])
         self.__player_color_generator = cycler(self.__data.PLAYER_COLORS['available_values'])
         self.__enemy_color_generator = cycler(self.__data.ENEMY_COLORS['available_values'])
 
+        # Default starting values
         self.__toolbar_position = self.__data.TOOLBARS['default']
         self.__resolution = self.__data.RESOLUTIONS['default']
         self.__tick_speed = self.__data.TICK_SPEEDS['default']
         self.__player_color = self.__data.PLAYER_COLORS['default']
         self.__enemy_color = self.__data.ENEMY_COLORS['default']
 
+        # Other configs
         self.clock = pygame.time.Clock()
         self.window_width, self.window_height = self.get_actual_value('resolution').get('value')
         self.screen = Screen(self.window_width, self.window_height)
@@ -82,6 +89,10 @@ class Options:
 
     def clock_tick(self):
         self.clock.tick(self.__tick_speed.get('value'))
+
+    def screen_update(self):
+        self.window_width, self.window_height = self.get_actual_value('resolution').get('value')
+        self.screen.resize(self.window_width, self.window_height)
 
     def get_actual_value(self, element):
         if element == 'toolbar':
