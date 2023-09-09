@@ -24,9 +24,9 @@ class OptionsData:
     TICK_SPEEDS = {
         'default': None,
         'available_values': [
-            {'name': 'Slow', 'value': 10},
-            {'name': 'Medium', 'value': 20},
-            {'name': 'Fast', 'value': 40}
+            {'name': 'Slow', 'value': 7},
+            {'name': 'Medium', 'value': 15},
+            {'name': 'Fast', 'value': 30}
         ]
     }
 
@@ -99,33 +99,29 @@ class Options:
         
     def get_next_value(self, element):
         if element == 'toolbar':
-            self.__toolbar_position = self.get_different_value('toolbar')            
+            self.__toolbar_position = self.get_different_value('toolbar', self.__toolbar_position)            
             return self.__toolbar_position
         elif element == 'resolution':
-            self.__resolution = self.get_different_value('resolution')
+            self.__resolution = self.get_different_value('resolution', self.__resolution)
             return self.__resolution
         elif element == 'tick_speed':
-            self.__tick_speed = self.get_different_value('tick_speed')
+            self.__tick_speed = self.get_different_value('tick_speed', self.__tick_speed)
             return self.__tick_speed
         elif element == 'player_color':
-            self.__player_color = self.get_different_value('player_color')
+            self.__player_color = self.get_different_value('player_color', self.__player_color)
             return self.__player_color
         elif element == 'enemy_color':
-            self.__enemy_color = self.get_different_value('enemy_color')
+            self.__enemy_color = self.get_different_value('enemy_color', self.__enemy_color)
             return self.__enemy_color
         else:
             raise ValueError('Invalid element')
 
-    def get_different_value(self, element):
-            generator_attribute_name = f'_{self.__class__.__name__}__{element}_generator'
-
-            old = getattr(self, generator_attribute_name)
-            if not old:
-                raise ValueError('Invalid element')
+    def get_different_value(self, attribute, old_value):
+            generator_attribute_name = f'_{self.__class__.__name__}__{attribute}_generator'
+            
             new = next(getattr(self, generator_attribute_name))
-
             # If the actual element is equal the new one, i return the next one again (to get a different value)
-            if old == new:
+            if old_value == new:
                 return next(getattr(self, generator_attribute_name)) 
             return new
 

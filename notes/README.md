@@ -26,8 +26,9 @@ They may not represent the current state of the project.
 ## BugFixes
 - [x] Label's text position change based on current text's length.
   - Label shoudl be in a fixed position, not based on current text's lenght.
-- [ ] Blue team cells can "eat" red team cells.
+- [x] Blue team cells can "eat" red team cells.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
+  - **Solution:** Since it is an "invasion", this will be maintained as a feature.
 - [ ] Area under the toolbar should be considered "dead", like out of screen.
 ## TODO general QOL
 - [ ] Replace matrices and lists creation with Numpy.
@@ -38,8 +39,8 @@ They may not represent the current state of the project.
 - [x] Implement 'options' menu
   - [x] Change toolbar position
   - [ ] Change grid resolution
-  - [ ] Change player color
-  - [ ] Change game's speed
+  - [x] Change player color
+  - [x] Change game's speed
 - [x] Create a toolbar with all the buttons
   - [x] Make labels clear
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.

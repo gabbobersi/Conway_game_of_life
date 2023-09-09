@@ -45,7 +45,11 @@ class OptionScene:
                         return Scenes.HOME.value
                     
                     if btn_toolbar_position.is_clicked(mouse_pos):
+                        print("Valore attuale: {}".format(self.options.get_actual_value('toolbar')))
+
                         self.tmp_toolbar_pos = self.options.get_next_value('toolbar')
+                        print("Valore successivo: {}".format(self.tmp_toolbar_pos))
+
                         btn_toolbar_position.update(text='Toolbar: {}'.format(self.tmp_toolbar_pos.get('name')))
 
                     if btn_change_resolution.is_clicked(mouse_pos):
