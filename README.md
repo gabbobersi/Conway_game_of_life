@@ -9,9 +9,10 @@ If the dependencies are met, just run "main.py", and the game should start.
 - **Space**: start/stop the game
 - **R**: like pressing the "Random" button
 
-![Game_Of_Life](https://github.com/gabbobersi/Conway_game_of_life/assets/65022671/6018a1a1-4013-47a6-8d2e-ce1dd4331897)
+![Game_Of_Life_2](https://github.com/gabbobersi/Conway_game_of_life/assets/65022671/245d1e10-8385-4baf-84b0-33ca82b1da67)
 
 ## Dependencies
+
 - Python 3.xx
 - pygame module `pip install pygame`
 - numpy module `pip install numpy`
