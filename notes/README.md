@@ -41,6 +41,7 @@ They may not represent the current state of the project.
 - play scene
   - [x] Add a 'Main menu' button in 'play' mode
   - [ ] Remove Stop button. Make Activate a switch button between playing and drawing modes.
+  - [ ] Add a 'Patterns picker' for draw an existent working pattern (so you could potentially use only cool patterns to see their function).
 - options scene
   - [x] Change toolbar position
   - [x] Change grid resolution
