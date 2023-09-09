@@ -68,3 +68,7 @@ They may not represent the current state of the project.
 - **Oversharing Options object**:
   - Positive: everywhere in the code, I can access the options object and change its values.
   - Negative: Options object will have too many responsibilities.
+
+## Historical screens
+(until july 2023)
+![Game_Of_Life](https://github.com/gabbobersi/Conway_game_of_life/assets/65022671/6018a1a1-4013-47a6-8d2e-ce1dd4331897)
