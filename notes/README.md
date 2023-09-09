@@ -30,9 +30,7 @@ They may not represent the current state of the project.
   - The rule is that if a cell has a different color from "me", counts as a "dead" cell.
   - **Solution:** Since it is an "invasion", this will be maintained as a feature.
 - [ ] Area under the toolbar should be considered "dead", like out of screen.
-## TODO general QOL
-- [ ] Replace matrices and lists creation with Numpy.
-## TODO Features
+## TODO Features / QOL improvements
 - buttons
   - [x] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
   - [ ] Add a feedback effect to signal "mouse over button".
@@ -42,13 +40,16 @@ They may not represent the current state of the project.
     - [ ] Add a little animation
 - play scene
   - [x] Add a 'Main menu' button in 'play' mode
+  - [ ] Remove Stop button. Make Activate a switch button between playing and drawing modes.
 - options scene
   - [x] Change toolbar position
   - [x] Change grid resolution
   - [x] Change player color
   - [x] Change game's speed
 - QOL
-  - [x] Change Team.get_opposite_team into Team.get_opposite_color
+  - [x] Change Team.get_opposite_team into Team.get_opposite_color.
+  - [ ] Improve grid logic to prevent multiple iterations over the same matrix.
+  - [ ] Replace matrices and lists creation with Numpy.
 - toolbar
   - [x] Make labels clear (choose a visible font)
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
