@@ -33,20 +33,26 @@ They may not represent the current state of the project.
 ## TODO general QOL
 - [ ] Replace matrices and lists creation with Numpy.
 ## TODO Features
-- [x] Change Team.get_opposite_team into Team.get_opposite_color
-- [x] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
-- [x] Add a 'Main menu' button in 'play' mode
-- [x] Implement 'options' menu
+- buttons
+  - [x] Clarify "is_clicked" method of Button class (the mouse is over the btn here, and not clicked).
+  - [ ] Add a feedback effect to signal "mouse over button".
+  - [ ] Add a feedback effect to signal "button clicked". 
+- home scene
+  - [ ] "Beautify"
+    - [ ] Add a little animation
+- play scene
+  - [x] Add a 'Main menu' button in 'play' mode
+- options scene
   - [x] Change toolbar position
   - [x] Change grid resolution
   - [x] Change player color
   - [x] Change game's speed
-- [x] Create a toolbar with all the buttons
+- QOL
+  - [x] Change Team.get_opposite_team into Team.get_opposite_color
+- toolbar
   - [x] Make labels clear (choose a visible font)
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
 - [x] Create a UI manager that, based on the current resolution, places the UI elements in the right position.
-- [ ] "Beautify" main menu
-  - [ ] Add a little animation for the main menu
 - [ ] Online Multiplayer
   - [ ] Server side
   - [ ] Client side
