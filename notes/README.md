@@ -2,27 +2,27 @@ These are some notes I took while developing this project.
 They may not represent the current state of the project.
 
 ## Implemented features
-- **Main menu** (*WIP*):
+- **Home scene**:
   - play
-  - options _WIP_
-  - quit _WIP_
-- **Activate**
-  - start Game Of Life.
-- **Stop**:
-  - stop the game at any time.
-- **Random**:
-  - generates a random number of "live" cells in random positions.
-- **Clear**:
-  - clears the grid.
-- **Invasion** (*WIP*):
-  - generates in random position, a random number of "live" cells of the opposite teams.
-- **Counters** (*WIP*): (they count per single generation!)
-  - RED team live cells counter
-  - RED team dead cells counter
-  - RED team born cells counter
-- **Dynamic Toolbar**
-  - Can be set on 'top' or on 'side' of the screen. 
- 
+  - options
+  - quit
+- **Play scene**
+  - Activate: start Game Of Life.
+  - Stop: stop the game at any time.
+  - Random: generates a random number of "live" cells in random positions.
+  - Clear: clears the grid.
+  - Invasion: generates in random position, a random number of "live" cells of the opposite teams.
+  - Informative counters:
+    - All teams live cells counter
+    - All teams dead cells counter
+    - All teams born cells counter
+- **Options scene**
+  - Change toolbar position
+  - Change resolution
+  - Change player color
+  - Change game speed
+- **Quit scene**
+  - Correctly quit pygame and system process.  
 ## BugFixes
 - [x] Label's text position change based on current text's length.
   - Label shoudl be in a fixed position, not based on current text's lenght.
@@ -45,8 +45,8 @@ They may not represent the current state of the project.
   - [x] Make labels clear (choose a visible font)
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
 - [x] Create a UI manager that, based on the current resolution, places the UI elements in the right position.
-- [ ] Add a little animation for the main menu
 - [ ] "Beautify" main menu
+  - [ ] Add a little animation for the main menu
 - [ ] Online Multiplayer
   - [ ] Server side
   - [ ] Client side
