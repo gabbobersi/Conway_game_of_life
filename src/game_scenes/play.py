@@ -9,11 +9,13 @@ from UI_elements.toolbar.factory import ToolbarFactory
 import pygame
 
 class PlayScene:
-    def __init__(self, options):
+    def __init__(self, options, ui_manager):
         self.options = options
         self.team_manager = TeamManager('player', 'enemy', self.options)
+        self.ui_manager = ui_manager
 
     def run(self):
+        self.ui_manager.clear_elements()         # Clear the UI manager
         self.options.screen.fill(Color.WHITE.value)
         grid = Grid(self.options, self.team_manager)
 

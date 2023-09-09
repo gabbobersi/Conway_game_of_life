@@ -5,17 +5,18 @@ from UI_elements.button import Button
 import pygame
 
 class HomeScene:
-    def __init__(self, options):
+    def __init__(self, options, ui_manager):
         self.options = options
-
+        self.ui_manager = ui_manager
+    
     def run(self):
         self.options.screen_update()    # Change resolution according to the actual options
+        self.ui_manager.clear_elements()         # Clear the UI manager
         self.options.screen.fill(Color.WHITE.value)
-        middle_screen = (self.options.window_width - 100) // 2, (self.options.window_height - 200) // 2
 
-        btn_Start = Button(self.options.screen.get_screen(), 'Start', True, middle_screen[0], middle_screen[1] - 150)
-        btn_Option = Button(self.options.screen.get_screen(), 'Options', True, middle_screen[0], middle_screen[1] - 70)
-        btn_Quit = Button(self.options.screen.get_screen(), 'Quit', True, middle_screen[0], middle_screen[1])
+        self.ui_manager.add_button('Start', 100, 50, Color.CUSTOM_RED.value)
+        self.ui_manager.add_button('Option', 100, 50, Color.CUSTOM_RED.value)
+        self.ui_manager.add_button('Quit', 100, 50, Color.CUSTOM_RED.value)
 
         while True:
             for event in pygame.event.get():
@@ -23,16 +24,14 @@ class HomeScene:
                     return Scenes.QUIT.value
                 elif event.type == pygame.MOUSEBUTTONDOWN: 
                     mouse_pos = pygame.mouse.get_pos()
-                    if btn_Start.is_clicked(mouse_pos):
-                        return Scenes.PLAY.value
-                    elif btn_Option.is_clicked(mouse_pos):
-                        return Scenes.OPTION.value
-                    elif btn_Quit.is_clicked(mouse_pos):
-                        return Scenes.QUIT.value
-            
-            btn_Start.draw()
-            btn_Option.draw()
-            btn_Quit.draw()
 
+                    if self.ui_manager.get_element('Start').is_clicked(mouse_pos):
+                        return Scenes.PLAY.value
+                    elif self.ui_manager.get_element('Option').is_clicked(mouse_pos):
+                        return Scenes.OPTION.value
+                    elif self.ui_manager.get_element('Quit').is_clicked(mouse_pos):
+                        return Scenes.QUIT.value
+
+            self.ui_manager.draw()
             pygame.display.update()
             self.options.clock_tick()       

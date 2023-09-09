@@ -8,7 +8,7 @@ SETTINGS = {
         }
     },
     'left': {
-        'width': 200,
+        'width': 130,
         'label_position': {
             'additional_x': 20,
             'additional_y': 0

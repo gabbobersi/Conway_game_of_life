@@ -1,6 +1,7 @@
 import random
 
 import pygame
+import numpy as np
 
 from UI_elements.color import Color
 from team import TeamManager
@@ -10,9 +11,11 @@ class Grid:
     def __init__(self, options, team_manager: TeamManager):
         self.options = options
         self.options.cell_size = 10          
-        self.width = self.options.window_width // self.options.cell_size
-        self.height = self.options.window_height // self.options.cell_size
-        self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
+        self.cell_width = self.options.window_width // self.options.cell_size
+        self.cell_height = self.options.window_height // self.options.cell_size
+
+        self.np_grid = np.zeros((self.cell_width, self.cell_height))
+        self.grid = [[Color.WHITE.value for _ in range(self.cell_width)] for _ in range(self.cell_height)]
 
         self.player = team_manager.player
         self.enemy = team_manager.enemy
@@ -22,16 +25,16 @@ class Grid:
         self._born_cells_counter = 0
 
     def apply_game_rules(self):
-        new_grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
+        new_grid = [[Color.WHITE.value for _ in range(self.cell_width)] for _ in range(self.cell_height)]
 
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.cell_width):
+            for y in range(self.cell_height):
                 new_grid = self.modify_cell_by_rule(x, y, self.player.color, new_grid)
                 new_grid = self.modify_cell_by_rule(x, y, self.enemy.color, new_grid)
 
         # Grid update
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.cell_width):
+            for y in range(self.cell_height):
                 self.grid[y][x] = new_grid[y][x]
 
     def modify_cell_by_rule(self, x: int, y: int, color: tuple[int, int, int], new_grid: list):
@@ -55,13 +58,13 @@ class Grid:
         self._dead_cells_counter = 0
         self._born_cells_counter = 0
 
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.cell_width):
+            for y in range(self.cell_height):
                 rect = pygame.Rect(x * self.options.cell_size, y * self.options.cell_size, self.options.cell_size, self.options.cell_size)
                 pygame.draw.rect(self.options.screen.get_screen(), self.grid[y][x], rect)
 
     def clear(self):
-        self.grid = [[Color.WHITE.value for _ in range(self.width)] for _ in range(self.height)]
+        self.grid = [[Color.WHITE.value for _ in range(self.cell_width)] for _ in range(self.cell_height)]
         self.__reset_cells_counter()
 
     def count_live_neighbors(self, x: int, y: int, color: tuple[int, int, int]):
@@ -78,7 +81,7 @@ class Grid:
                 neighbor_y = y + j
 
                 # Check if the cell is inside the grid
-                if 0 <= neighbor_x < self.width and 0 <= neighbor_y < self.height:
+                if 0 <= neighbor_x < self.cell_width and 0 <= neighbor_y < self.cell_height:
                     if self.grid[neighbor_y][neighbor_x] == color:
                         count += 1
         return count
@@ -105,8 +108,8 @@ class Grid:
         if not color:
             color = self.player.color
 
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.cell_width):
+            for y in range(self.cell_height):
                 rand = random.randint(0, 4)
                 if rand == 0 and self.grid[y][x] == Color.WHITE.value:
                     self.grid[y][x] = color
@@ -118,8 +121,8 @@ class Grid:
     #     It counts alive cells.
     #     """
     #     count = 0
-    #     for x in range(self.width):
-    #         for y in range(self.height):
+    #     for x in range(self.cell_width):
+    #         for y in range(self.cell_height):
     #             if self.grid[y][x] == color:
     #                 count += 1
     #     return count

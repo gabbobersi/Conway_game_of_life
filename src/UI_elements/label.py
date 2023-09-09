@@ -2,7 +2,7 @@ from typing import Callable
 
 import pygame
 
-from base_classes.entity import Entity
+from UI_elements.base_classes.entity import Entity
 from UI_elements.color import Color
 
 class Label(Entity):

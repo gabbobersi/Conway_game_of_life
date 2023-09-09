@@ -38,12 +38,13 @@ They may not represent the current state of the project.
 - [x] Add a 'Main menu' button in 'play' mode
 - [x] Implement 'options' menu
   - [x] Change toolbar position
-  - [ ] Change grid resolution
+  - [x] Change grid resolution
   - [x] Change player color
   - [x] Change game's speed
 - [x] Create a toolbar with all the buttons
-  - [x] Make labels clear
+  - [x] Make labels clear (choose a visible font)
   - [ ] Make the area of the toolbar + area of the labels "dead" as window's borders.
+- [x] Create a UI manager that, based on the current resolution, places the UI elements in the right position.
 - [ ] Add a little animation for the main menu
 - [ ] "Beautify" main menu
 - [ ] Online Multiplayer
@@ -53,7 +54,7 @@ They may not represent the current state of the project.
   - [ ] Draw mode with limited resources per team 
 ## Engineering tradeoffs
 - **More iterations on the grid:**
-  - Note: Matrices operations will be ported to Numpy in the future.
+  - Note: Matrices operations will be ported to Numpy in the future (they represents an obvious bottle-neck).
   - Positive: code is more organized and maintainable.
   - Negative: in grid.py module, different methods require different iterations on the same matrix (which is the grid, listxlist).
 - **Factory patterns:**
@@ -64,3 +65,6 @@ They may not represent the current state of the project.
   To put maintainability and readability as priority, as Gang Of Four also suggests, I decided to implement both. 
   - Positive: maintainability, readability, less lines of code.
   - Negative: different patterns for different UI elements.
+- **Oversharing Options object**:
+  - Positive: everywhere in the code, I can access the options object and change its values.
+  - Negative: Options object will have too many responsibilities.

@@ -4,6 +4,7 @@ from game_scenes.home import HomeScene
 from game_scenes.play import PlayScene
 from game_scenes.option import OptionScene
 from game_scenes.quit import QuitScene
+from UI_elements.manager import UIManager
 
 import pygame
 
@@ -14,6 +15,7 @@ class Game:
         pygame.display.set_caption('Game of Life')
         self.options = Options()      
         self.scene = Scenes.HOME.value    # Starting scene
+        self.ui_manager = UIManager(self.options)
 
     def run(self):
         if self.scene not in Scenes.VALID.value:
@@ -23,20 +25,20 @@ class Game:
         while True:
             if self.scene == Scenes.HOME.value:
                 print("Starting home scene...")
-                scene = HomeScene(self.options)
+                scene = HomeScene(self.options, self.ui_manager)
                 self.scene = scene.run()
 
             elif self.scene == Scenes.OPTION.value:
                 print("Starting option scene...")
-                scene = OptionScene(self.options)
+                scene = OptionScene(self.options, self.ui_manager)
                 self.scene = scene.run()
             
             elif self.scene == Scenes.PLAY.value:
                 print("Starting play scene...")
-                scene = PlayScene(self.options)
+                scene = PlayScene(self.options, self.ui_manager)
                 self.scene = scene.run()
             
             elif self.scene == Scenes.QUIT.value:
                 print("Starting quit scene...")
-                scene = QuitScene(self.options)
+                scene = QuitScene(self.options, self.ui_manager)
                 self.scene = scene.run()

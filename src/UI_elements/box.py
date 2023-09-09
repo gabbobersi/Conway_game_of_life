@@ -1,7 +1,7 @@
 import pygame
 
 from UI_elements.color import Color
-from base_classes.entity import InteractiveEntity
+from UI_elements.base_classes.entity import InteractiveEntity
 
 class Box(InteractiveEntity):
     """
