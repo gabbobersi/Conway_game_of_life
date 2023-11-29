@@ -40,5 +40,5 @@ class Game:
             
             elif self.scene == Scenes.QUIT.value:
                 print("Starting quit scene...")
-                scene = QuitScene(self.options, self.ui_manager)
+                scene = QuitScene(self.options)
                 self.scene = scene.run()
