@@ -2,7 +2,7 @@
 Implementation of Conway's Game Of Life in Python with PyGame module.
 
 ## How to play
-If the dependencies are met, just run "main.py", and the game should start.
+If the dependencies are met, just run (from project root) "python src/main.py", and the game should start.
 ### Controls
 - **Left mouse button**: place a cell
 - **Right mouse button**: remove a cell
